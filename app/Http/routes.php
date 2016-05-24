@@ -26,4 +26,20 @@ Route::get('Login',array(
     'as'=>'LteLogin',
     'uses'=>'LaravelTaskController@LteLogin'
 ));
+Route::post('Registration-2',array(
+    'as'=>'form2',
+    'uses'=>'LaravelTaskController@form2'
+));
+Route::post('Confirmation',array(
+    'as'=>'submitform',
+    'uses'=>'LaravelTaskController@submitform'
+));
+Route::post('Submission',array(
+    'as'=>'Onconfirm',
+    'uses'=>'LaravelTaskController@Onconfirm'
+));
+Route::get('Registration-2',array(
+    'as'=>'back',
+    'uses'=>'LaravelTaskController@form2'
+));
 
