@@ -23,8 +23,12 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="#"><b>Admin</b>LTE</a>
   </div>
+
+@if(isset($message))
+<div class="alert alert-info">{{$message}}</div>
+@endif
 
   <div class="register-box-body">
     <p class="login-box-msg">Register a new membership</p>

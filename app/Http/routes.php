@@ -42,4 +42,12 @@ Route::get('Registration-2',array(
     'as'=>'back',
     'uses'=>'LaravelTaskController@form2'
 ));
+Route::post('loggedin',array(
+    'as'=>'loggedin',
+    'uses'=>'LaravelTaskController@loggedin'
+));
+Route::get('LogDetails',array(
+    'as'=>'LogDetails',
+    'uses'=>'LaravelTaskController@LogDetails'
+));
 
