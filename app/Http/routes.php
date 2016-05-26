@@ -46,8 +46,37 @@ Route::post('loggedin',array(
     'as'=>'loggedin',
     'uses'=>'LaravelTaskController@loggedin'
 ));
-Route::get('LogDetails',array(
-    'as'=>'LogDetails',
-    'uses'=>'LaravelTaskController@LogDetails'
+Route::get('UpdateProfile',array(
+    'as'=>'UpdateProfile',
+    'uses'=>'LaravelTaskController@UpdateProfile'
 ));
+Route::get('ChangePassword',array(
+    'as'=>'ChangePassword',
+    'uses'=>'LaravelTaskController@ChangePassword'
+));
+Route::post('Update',array(
+    'as'=>'onupdate',
+    'uses'=>'LaravelTaskController@onupdate'
+));
+Route::post('ChangePassword',array(
+    'as'=>'password',
+    'uses'=>'LaravelTaskController@password'
+));
+Route::get('logout',array(
+    'as'=>'logout',
+    'uses'=>'LaravelTaskController@logout'
+));
+Route::get('FileUpload',array(
+    'as'=>'FileUpload',
+    'uses'=>'LaravelTaskController@FileUpload'
+));
+Route::get('maps',array(
+    'as'=>'maps',
+    'uses'=>'LaravelTaskController@maps'
+));
+Route::post('upload',array(
+    'as'=>'upload',
+    'uses'=>'LaravelTaskController@upload'
+));
+
 

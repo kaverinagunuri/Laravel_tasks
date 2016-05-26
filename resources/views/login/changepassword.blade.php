@@ -27,24 +27,16 @@
     <a href="#"><b>Admin</b>LTE</a>
    
   </div>
-    @if ( session()->has('logout') )
-    <div class="alert alert-info">{{ session()->get('logout') }}</div>
-@endif
-
   <!-- /.login-logo -->
-   @if(isset($error))
-    <div class="alert alert-danger">{{$error}}</div>
-    @endif
+  @if ( session()->has('password') )
+    <div class="alert alert-info">{{ session()->get('password') }}</div>
+@endif
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Change password</p>
 
-    <form action="{{URL::route('loggedin')}}" method="post">
+    <form action="{{URL::route('password')}}" method="post">
            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-      <div class="form-group has-feedback">
-          <input type="email" class="form-control" placeholder="Email" name="Email" id="Email" />
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-       <span class="error" id="Email_error"></span>
-      </div>
+     
       <div class="form-group has-feedback">
           <input type="password" class="form-control" placeholder="Password" name="Password" id="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -54,17 +46,13 @@
        
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" name="login" id="login" class="btn btn-primary btn-block btn-flat">Log In</button>
+          <button type="submit" name="change" id="change" class="btn btn-primary btn-block btn-flat">Change</button>
         </div>
         <!-- /.col -->
       </div>
     </form>
 
-    <!-- /.social-auth-links -->
-
-    <a href="#">I forgot my password</a><br>
-    <a href="{{URL::route('LteRegister')}}" class="text-center">Register a new membership</a>
-
+   
   </div>
   <!-- /.login-box-body -->
 </div>

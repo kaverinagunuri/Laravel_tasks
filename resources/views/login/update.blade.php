@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Registration Page</title>
+  <title>AdminLTE 2 | Update Page</title>
  
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
@@ -29,39 +29,37 @@
 @if(isset($message))
 <div class="alert alert-info">{{$message}}</div>
 @endif
+@if ( session()->has('update') )
+    <div class="alert alert-info">{{ session()->get('update') }}</div>
+@endif
 
   <div class="register-box-body">
-    <p class="login-box-msg">Register a new membership</p>
+    <p class="login-box-msg">Update Profile</p>
 
-    <form action="{{URL::route('form2')}}" method="post">
+    <form action="{{URL::route('onupdate')}}" method="post">
         <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+        @if(isset($info))
       <div class="form-group has-feedback">
-          <input type="text" class="form-control" placeholder="Full name" id="Full_name" name="Full_name">
+          <input type="text" class="form-control" placeholder="Full name" id="Full_name" name="Full_name" value="{{$info['Full_name']}}"> 
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <span class="error" id="Fullname_error"></span>
-        @if($errors->has('Full_name'))
-				{{ $errors->first('Full_name') }}
-			@endif
+       
       </div>
         <div class="form-group has-feedback">
-            <textarea class="form-control" rows="3" cols="75" placeholder="Address" name="Address" id="Address"></textarea>
+            <textarea class="form-control" rows="3" cols="75" placeholder="Address" name="Address" id="Address"  value="{{$info['Address']}}">{{$info['Address']}}</textarea>
         <span class="glyphicon glyphicon-home form-control-feedback"></span>
         <span class="error" id="Address_error"></span>
-        @if($errors->has('Address'))
-				{{ $errors->first('Address') }}
-			@endif
+       
       </div>
         <div class="form-group has-feedback">
-          <input type="text" class="form-control" placeholder="City" id="City" name="City">
+          <input type="text" class="form-control" placeholder="City" id="City" name="City"  value="{{$info['City']}}">
         <span class="glyphicon glyphicon-home form-control-feedback"></span>
         <span class="error" id="City_error"></span>
-        @if($errors->has('City'))
-				{{ $errors->first('City') }}
-			@endif
+      
       </div>
         <div class='form-group has-feedback'>
             <select class="form-control" id="state" name="state" >
-                   <option value="Select" selected>Select State</option>
+                <option value="{{$info['State']}}" selected="" >{{$info['State']}}</option>
                    <option value="Telanagana">Telanagana</option>
                    <option value="Andhra Pradesh">Andhra Pradesh</option>
                    <option value="Tamil Nadu">Tamil Nadu</option>
@@ -74,22 +72,17 @@
                    <option value="Madhya Pradesh">Madhya Pradesh</option>
                </select>
            </div>
-       
-<!--      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email" name="Email" id="Email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-         <span class="error" id="Email_error"></span>
-      </div>
-      <div class="form-group has-feedback">
-          <input type="password" class="form-control" placeholder="Password" name="Password" id="Password" />
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          <span class="error" id="PasswordError"></span>
-      </div>
-      <div class="form-group has-feedback">
-          <input type="password" class="form-control" placeholder="Retype password" name="ConfirmPassword" id="ConfirmPassword"/>
-        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-         <span class="error" id="ConfirmPasswordError" ></span>
-      </div>-->
+    <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="Phone Number" id="Mobile" name="Mobile" size="10" value="{{$info['Mobile']}}">
+                        <span class="glyphicon glyphicon-phone-alt form-control-feedback"></span>
+                          <span class="error" id="Mobile_error"></span>
+                    </div>
+                    <div class='form-group has-feedback'>
+                        <input type="email" class="form-control" placeholder="Email" id="Email" name="Email" value="{{$info['Email']}}">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <span class="error" id="Email_error"></span>
+                    </div>
+        @endif
       <div class="row">
 <!--        <div class="col-xs-8">
          
@@ -100,7 +93,7 @@
         </div>-->
         <!-- /.col -->
         <div class="col-xs-4">
-            <button type="submit" id="next" class="btn btn-primary btn-block btn-flat">Next</button>
+            <button type="submit" id="update" class="btn btn-primary btn-block btn-flat">Update</button>
         </div>
         <!-- /.col -->
       </div>
