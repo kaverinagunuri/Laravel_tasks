@@ -1,0 +1,50 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26 May, 2016, 6:21:30 PM
+    Author     : kaverikarmanya
+*/
+
+
+<!-- Map Container Styling -->
+/* #Full Screen CSS (Desktop)
+
+================================================== */
+#mapContainer {
+     height: 500px;
+     width: 920px;
+     border:10px solid #eaeaea;
+     margin-top:20px;
+     margin-bottom:20px;
+}
+
+/* #Tablet (Portrait)
+================================================== */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+     #mapContainer {
+          height: 500px;
+          width: 708px;
+     }
+}
+
+/* #Mobile (Portrait)
+================================================== */
+@media only screen and (max-width: 767px) {
+     #mapContainer {
+          height: 260px;
+          width: 260px;
+     }
+}
+
+/* #Mobile (Landscape)
+================================================== */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+     #mapContainer {
+          height: 400px;
+          width: 400px;
+     }
+}
+

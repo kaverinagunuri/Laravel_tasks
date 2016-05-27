@@ -78,5 +78,9 @@ Route::post('upload',array(
     'as'=>'upload',
     'uses'=>'LaravelTaskController@upload'
 ));
+Route::get('json',array(
+    'as'=>'json',
+    'uses'=>'LaravelTaskController@json'
+));
 
 

@@ -69,6 +69,34 @@ $(document).ready(function () {
           $("#Address_error").html("");
     }
    });
+    $("#Password").keyup(function () {
+
+       var ValidatePassword = $("#Password").val();
+       if (ValidatePassword.length < 8)
+       {
+           $("#PasswordError").html("Password should be atleast 8 characters");
+       } else {
+           $("#PasswordError").html("");
+       }
+
+   });
+   $("#City").keyup(function(){
+        var first = $("#City").val();
+        if (first === "")
+        {
+            $("#City_error").html("city field should not be empty");
+            return false;
+        }
+        else if($.isNumeric(first))
+        {
+             $("#City_error").html("city field should not be numbers");
+            return false;
+        }else{
+          $("#City_error").html(""); 
+           return true;
+}
+   });
+  
 //    $("#next").click(function () {
 //        var fullname = ValidateFullName();
 ////        var Email = ValidateEmail();
@@ -116,6 +144,58 @@ $(document).ready(function () {
    }
    
    });
+   $("#update").click(function(event){
+       var fullname = ValidateFullName();
+        var City=ValidateCity();
+       var address=ValidateAddress();
+       var Email = ValidateEmail();
+        var Mobile=ValidateMobile();
+     
+       
+   if(Email==false || Mobile==false || fullname==false || City==false || address==false)
+   {
+       event.preventDefault();
+   }
+   
+   });
+   $("#login").click(function(event){
+      
+       var Email = ValidateEmail();
+        var password=ValidatePassword();
+     
+       
+   if(Email==false || password==false)
+   {
+       event.preventDefault();
+   }
+   
+   });
+   
+   $("#change").click(function(event){
+      
+     
+        var password=ValidatePassword();
+     
+       
+   if( password==false)
+   {
+       event.preventDefault();
+   }
+   
+   });
+   $("#upload").click(function(event){
+      
+   
+        var upload=upload();
+     alert(upload);
+       
+   if( upload==false)
+   {
+       event.preventDefault();
+   }
+   
+   });
+   
    
    
 });
@@ -210,6 +290,31 @@ function ValidateAddress(){
             return false;
         }else{
           $("#Address_error").html("");
+    }
+}
+function ValidatePassword(){
+   var ValidatePassword = $("#Password").val();
+       if (ValidatePassword.length < 8)
+       {
+           $("#PasswordError").html("Password should be atleast 8 characters");
+           return false;
+       } else {
+           $("#PasswordError").html("");
+           return true;
+       }  
+}
+function upload(){
+    alert("hai");
+    var upload=$("#file").val();
+    if(upload=="")
+    {
+        $("#file_error").html("Address field should not be empty");
+            return false; 
+            alert("hai");
+    }
+    else{
+         $("#file_error").html("");
+           return true;
     }
 }
 //function submit(event){

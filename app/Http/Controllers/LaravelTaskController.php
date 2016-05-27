@@ -29,6 +29,8 @@ Use Illuminate\Support\Facades\Hash;
 use DateTime;
 use Mail;
 use Illuminate\Http\Request;
+use App\Uploads;
+use App\Logs;
 
 class LaravelTaskController extends BaseController {
 
@@ -296,19 +298,19 @@ class LaravelTaskController extends BaseController {
 //    'BrowserPattern'=>$yourbrowser['pattern'],
 //    'IPAddress' => $input['ip'], 
 //    'UserName' => $Email]);
-
-
-            AddUser::where('Id', Session::get('Id'))
-                    ->update(['UserAgent' => $jsonDetails,
+ 
+            Logs::create(['UserAgent' => $jsonDetails,
                         'IpAddress' => $input['ip'],
                         'BrowserName' => $yourbrowser['name'],
-                        'version' => $yourbrowser['version'],
-                        'platform' => $yourbrowser['platform']]);
-            $browserDetails = AddUser::select('UserAgent', 'IpAddress', 'BrowserName', 'version', 'platform')->where('Email', Session::get('Email'))->first();
+                        'Version' => $yourbrowser['version'],
+                        'Platform' => $yourbrowser['platform'],
+                          'Email'=>Session::get('Email'),
+               ]);
+            $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform','updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
             $browserDetails = json_decode(json_encode($browserDetails), TRUE);
-//print_r($browserDetails);
-            $address = Session::get('Address');
-            return view('login.logdetails', ['logs' => $browserDetails, 'Address' => $address]);
+//($browserDetails);
+           
+           return view('login.logdetails', ['logs' => $browserDetails]);
 
             //return Redirect::route('adminlte');
         } else {
@@ -391,36 +393,36 @@ class LaravelTaskController extends BaseController {
         return view('layouts.location');
     }
     public function upload(){
-        $input=Input::file('userImage');
-        $error=array();
-      $allowed=array('jpg','jpeg','gif','png');
+       $input = Input::file('file');
+      
      $file_name=$input->getClientOriginalName();
-     // echo $file_name;
-        @$file_ext=  strtolower(end(explode('.', $file_name)));
-       //echo $file_ext;
-        $file_size=$input->getClientSize();
-//    $file_tmp=$input['tmp_name'];
-    if(in_array($file_ext, $allowed)===FALSE)
-   {
-       $error[]='extension not allowed';
-       
-    }
-    if($file_size>2097152){
-       $error[]='file size should be less than 2 mb'; 
-    }
-     if(empty($error)){
-//    //move_uploaded_file($input['tmp_name'], "upload/$file_name");
-    $input->move("images", $input->getClientOriginalName());
-    $error[]="successfully uploaded";
-   }
-//   else{
-//      foreach ($error as $value) {
-//           echo $value.'<br/>';
-//           
-//       }
-  // }
+      $file_size=$input->getClientSize();
+      $file_type=$input->getClientMimeType();
+    
 
-      return View('FileUpload.fileupload');  
+    
+     
+    $input->move("images", $input->getClientOriginalName());
+    
+   Uploads::create(['File' => $file_name, 'Type' => $file_type, 'Size' => $file_size,'Email'=>Session::get('Email')]);
+       
+         
+
+ 
+  
+    }
+    public function json() {
+        $output_array = [];
+        session()->regenerate();
+         $get_file=Uploads::select('Id','File', 'Type', 'Size')
+                ->where('Email',Session::get('Email'))->get();
+           // $get_file = json_decode(json_encode($get_file), TRUE);
+          
+        $data=$get_file; 
+            //$get_file= json_encode($get_file);
+             return view('FileUpload.uploadfiles',['data'=>$data]);
+           
+        
     }
 
 }

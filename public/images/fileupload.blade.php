@@ -20,9 +20,48 @@
         <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 		<script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
                 <script src="{{asset('js/progress.js')}}"></script>
-           
+                 <script src="{{asset('js/Validations.js')}}"></script>
                   <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+                 <style>               
                  
+/* #Full Screen CSS (Desktop)
+================================================== */
+#mapContainer {
+    height: 500px;
+    width: 920px;
+    border:10px solid #eaeaea;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+/* #Tablet (Portrait)
+================================================== */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+	#mapContainer {
+	    height: 500px;
+	    width: 708px;
+	}
+}	
+	
+/*  #Mobile (Portrait)
+================================================== */
+@media only screen and (max-width: 767px) {
+	#mapContainer {
+	    height: 260px;
+	    width: 260px;
+	}
+}	
+
+/* #Mobile (Landscape)
+================================================== */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	#mapContainer {
+	    height: 400px;
+	    width: 400px;
+	}
+}	
+
+</style>
 
     </head>
     <body class="hold-transition login-page">
@@ -39,7 +78,11 @@
                     <input type="hidden" name="_token" value="{{csrf_token()}}"/>
 
                     <div class='formarea'>
-                       
+                         <p>@if(isset($error))
+                @foreach($error as $value)
+                {{ $value}}
+                @endforeach
+                @endif</p>
                          <div class="form-group has-feedback">
                        
                         <input type='file' name='file' id="file" />

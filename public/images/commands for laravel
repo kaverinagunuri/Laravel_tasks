@@ -1,0 +1,8 @@
+1)sudo apt-get update
+2)sudo apt-get install curl php5-cli git
+3)curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+4)cd test
+5)mkdir laravel
+6)cd laravel
+7)composer create-project --prefer-dist laravel/laravel blog
+

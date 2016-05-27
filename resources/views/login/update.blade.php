@@ -84,14 +84,9 @@
                     </div>
         @endif
       <div class="row">
-<!--        <div class="col-xs-8">
-         
-            <label>
-                <input type="checkbox" required=""> Do u want to continue
-            </label>
-         
-        </div>-->
-        <!-- /.col -->
+ <div class='col-xs-4'>
+     <a href="{{URL::route('LteRegister')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
+                        </div>
         <div class="col-xs-4">
             <button type="submit" id="update" class="btn btn-primary btn-block btn-flat">Update</button>
         </div>

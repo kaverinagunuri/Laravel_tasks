@@ -29,6 +29,15 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+<!-- Include jQuery -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<!-- Geolocation JS -->
+<script type="text/javascript" src="{{asset('js/map.js')}}"></script>
+<link rel="stylesheet" href="{{asset('/css/map.css')}}">
+
  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -416,6 +425,8 @@
           </a>
           <ul class="treeview-menu">
               <li><a href="{{URL::route('FileUpload')}}"><i class="fa fa-circle-o"></i> File Upload</a></li>
+               <li><a href="{{URL::route('json')}}"><i class="fa fa-circle-o"></i> View Files</a></li>
+              
               <li><a href="{{URL::route('maps')}}"><i class="fa fa-circle-o"></i> User Location</a></li>
             <li><a href="{{URL::route('UpdateProfile')}}"><i class="fa fa-circle-o"></i> Update Profile</a></li>
             <li><a href="{{URL::route('ChangePassword')}}"><i class="fa fa-circle-o"></i> Change Password</a></li>
@@ -564,29 +575,8 @@
               
             </div>
             <div class="box-body chat" id="chat-box">
-                <table class="table">
-    <thead>
-      <tr>
-        <th>UserAgent</th>
-        <th>IpAddress</th>
-        <th>BrowserName</th>
-         <th>version</th>
-          <th>platform</th>
-          
-      </tr>
-    </thead>
-    <tbody>
-        @if($logs)
-      <tr>
-        <td>{{$logs['UserAgent']}}</td>
-         <td>{{$logs['IpAddress']}}</td>
-         <td>{{$logs['BrowserName']}}</td>
-          <td>{{$logs['version']}}</td>
-           <td>{{$logs['platform']}}</td>
-      </tr>
-      @endif
-    </tbody>
-  </table>
+                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            </table>
              
             </div>
            
@@ -606,7 +596,16 @@
             </div>
             <div class="box-body chat" id="chat-box">
                 
-             <div id="mapContainer"></div>
+           <button class="btn btn-info btn-sm" onclick="getLocation()">User Location</button>
+
+                  <p id="demo"></p>
+                    
+                    
+                   
+                
+          
+            <div class="box-body">
+                <div id="googleMap" style="height:380px;"></div>
             </div>
             <!-- /.chat -->
             <div class="box-footer">
@@ -1179,6 +1178,27 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
+ <script>
+            var Data = <?php echo ($logs); ?>;
+     
+            $(document).ready(function () {
+                $('#example').DataTable({
+                    data: Data,
+                    columns: [
+                        {title: "UserAgent",data:"UserAgent"},
+                        {title: "IpAddress",data:"IpAddress"},
+                        {title: "BrowserName",data:"BrowserName"},
+                        {title: "Version",data:"Version"},
+                    
+                        
+                    ]
+
+                });
+                var table = $('#example').DataTable();
+               
+            });
+        </script>
 </body>
 </html>
 
