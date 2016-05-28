@@ -31,6 +31,7 @@ use Mail;
 use Illuminate\Http\Request;
 use App\Uploads;
 use App\Logs;
+use Illuminate\Support\Facades\Crypt;
 
 class LaravelTaskController extends BaseController {
 
@@ -40,14 +41,21 @@ class LaravelTaskController extends BaseController {
         ValidatesRequests;
 
     public function adminlte() {
+        session()->regenerate();
+      Session::destroy();
         return view('layouts.index');
     }
 
     public function LteRegister() {
+         session()->regenerate();
+       Session::destroy();
         return view('registration.register');
     }
 
     public function LteLogin() {
+         session()->regenerate();
+         
+      // Session::destroy();
         return view('layouts.login');
     }
 
@@ -67,7 +75,7 @@ class LaravelTaskController extends BaseController {
 
     public function submitform() {
         session()->regenerate();
-
+      
         $Email = Input::get('Email');
         $Mobile = Input::get('Mobile');
         session(['Email' => $Email, 'Mobile' => $Mobile]);
@@ -83,75 +91,15 @@ class LaravelTaskController extends BaseController {
     }
 
     public function Onconfirm() {
-        $info = null;
-        $message = null;
-        $ldate = new DateTime;
-        $hours = $ldate->format('H:i');
-
-        $hours = explode(":", $hours);
-        $hours = implode("", $hours);
-
-        $spcl_char = '!@#$%&*()_=+]}[{;:,<.>?|';
-        $spcl_char = str_shuffle($spcl_char);
-        $spcl_char = substr($spcl_char, 0, 5);
+           $info=null;
         $Full_name = Input::get('Full_name');
         $Address = Input::get('Address');
         $City = Input::get('City');
         $state = Input::get('state');
         $Email = Input::get('Email');
-
-        $Full_name = strtolower($Full_name);
-        $City = strtolower($City);
-        $state = strtolower($state);
-        $string = $City . $state;
-        $com = $string . $Full_name;
-        $com = str_split($com);
-        $alphabets = str_split("abcdefghijklmnopqrstvuwxyz");
-        $string = str_split($string);
-        $name = str_split($Full_name);
-        $arr = null;
-        $ex = null;
-        $count = 0;
-        for ($x = 0; $x < count($string); $x++) {
-            $count = 0;
-            for ($y = 0; $y < count($name); $y++) {
-                if ($string[$x] == $name[$y]) {
-                    $count = 1;
-                }
-            }
-            if ($count == 0) {
-                $arr.= $string[$x];
-            }
-        }
-
-        if (strlen($arr) < 11) {
-            $length = strlen($arr);
-            for ($x = 0; $x < count($alphabets); $x++) {
-                $count = 0;
-                for ($y = 0; $y < count($com); $y++) {
-                    if ($alphabets[$x] == $com[$y]) {
-                        $count = 1;
-                    }
-                }
-                if ($count == 0) {
-                    $ex.= $alphabets[$x];
-                }
-                if (strlen($ex) + $length == 11) {
-                    $x = count($alphabets);
-                }
-            }
-        }
-
-        $string = $arr . $ex;
-
-        $upper = strtoupper(substr($string, 0, 2));
-        $rand = str_shuffle($spcl_char . $hours . $upper);
-        $str = str_shuffle(substr($string, 2, 9));
-
-
-        $message = substr($str, 0, 4) . $rand . substr($str, 4, 5);
-
-
+        $object=new LaravelTaskController();
+        $message=$object->generatePassword($Full_name, $City, $state);
+        echo $message;
 
         $validator = Validator::make(Input::all(), array(
                     'Email' => 'required|max:50|email',
@@ -166,20 +114,8 @@ class LaravelTaskController extends BaseController {
                             ->withErrors($validator)
                             ->withInput();
         } else {
-            $Email = Input::get('Email');
-
-            $val = Mail::raw($message, function ($message)use($Email) {
-
-                        $message->from('kaveri.nagunuri@karmanya.co.in', 'kaveri');
-                        $message->to($Email)->subject("Generated Password");
-                    });
-            if ($val) {
-
-                $info.="Mails sent successfully";
-            } else {
-                $info.="Mails could not be sent please try again ";
-            }
-
+          
+            
             $Full_name = Input::get('Full_name');
             $Address = Input::get('Address');
             $City = Input::get('City');
@@ -195,7 +131,8 @@ class LaravelTaskController extends BaseController {
                 $info.="There is a problem in registration.Please try Again!";
             }
         }
-        return view('registration.register', ['message' => $info]);
+      
+       return view('registration.register', ['message' => $info]);
     }
 
     public function loggedin(Request $request) {
@@ -290,14 +227,6 @@ class LaravelTaskController extends BaseController {
             );
             $yourbrowser = ['userAgent' => $u_agent, 'name' => $bname, 'version' => $version, 'platform' => $platform, 'pattern' => $pattern];
                  $jsonDetails =  json_encode($yourbrowser);
-                   
-//DB::table('Logs')->insert(['BrowserDetails' => $jsonDetails,
-//    'BrowserName'=>$yourbrowser['name'],
-//    'BrowserVersion'=>$yourbrowser['version'],
-//    'BrowserPlateform'=>$yourbrowser['platform'],
-//    'BrowserPattern'=>$yourbrowser['pattern'],
-//    'IPAddress' => $input['ip'], 
-//    'UserName' => $Email]);
  
             Logs::create(['UserAgent' => $jsonDetails,
                         'IpAddress' => $input['ip'],
@@ -307,7 +236,7 @@ class LaravelTaskController extends BaseController {
                           'Email'=>Session::get('Email'),
                ]);
             $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform','updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
-            $browserDetails = json_decode(json_encode($browserDetails), TRUE);
+         
 //($browserDetails);
            
            return view('login.logdetails', ['logs' => $browserDetails]);
@@ -321,10 +250,14 @@ class LaravelTaskController extends BaseController {
 
     public function UpdateProfile() {
         session()->regenerate();
-        $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile')->where('Email', Session::get('Email'))->first();
-        $browserDetails = json_decode(json_encode($browserDetails), TRUE);
-
-        return view('login.update', ['info' => $browserDetails]);
+        $value=null;
+        $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile','CreditCard')->where('Email', Session::get('Email'))->first();
+     $value=$browserDetails['CreditCard'];
+    
+        $card=Crypt::decrypt($value);
+       echo $card;
+ 
+        return view('login.update', ['info' => $browserDetails,'credit'=>$card]);
     }
 
     public function onupdate() {
@@ -336,13 +269,17 @@ class LaravelTaskController extends BaseController {
         $state = Input::get('state');
         $Email = Input::get('Email');
         $Mobile = Input::get('Mobile');
+        $card=Input::get('credit');
+       $card=Crypt::encrypt($card);
+    
        $update= AddUser::where('Id', Session::get('Id'))->update([
             'Full_name' => $Full_name,
             'Address' => $Address,
             'City' => $City,
             'State' => $state,
             'Email' => $Email,
-            'Mobile' => $Mobile
+            'Mobile' => $Mobile,
+           'CreditCard'=>$card
         ]);
        if($update){
         return Redirect::route('UpdateProfile')
@@ -423,6 +360,111 @@ class LaravelTaskController extends BaseController {
              return view('FileUpload.uploadfiles',['data'=>$data]);
            
         
+    }
+    public function Forgot() {
+        return view('login.Forgot');
+    }
+    public function ForgotPassword() {
+        session()->regenerate();
+
+        $Email = Input::get('Email');
+          session(['Email' => $Email]);
+           $dbpwd = AddUser::select( 'Id','Full_name','Address','City','State')->where('Email', $Email)->first();
+           if($dbpwd){
+               $name=$dbpwd['Full_name'];
+               $Address=$dbpwd['Address'];
+               $City=$dbpwd['City'];
+               $State=$dbpwd['State'];
+               $object=new LaravelTaskController();
+               $message=$object->generatePassword($name, $City, $State);
+               echo $message;
+                if($message){
+                    $password=md5($message);
+                    AddUser::where('Email', $Email)->update(['Password'=>$password]);
+        return Redirect::route('LteLogin')
+                           ->with('password','Successfully Updated.Mail send to your respective Email ID');
+       }
+       else{
+          return Redirect::route('LteLogin')
+                           ->with('password','Problem in updating.Try again later!'); 
+       }
+           }
+          
+    }
+    function generatePassword($Full_name,$City,$state)
+    {
+        $info = null;
+        $message = null;
+        $ldate = new DateTime;
+        $hours = $ldate->format('H:i');
+
+        $hours = explode(":", $hours);
+        $hours = implode("", $hours);
+
+        $spcl_char = '!@#$%&*()_=+]}[{;:,<.>?|';
+        $spcl_char = str_shuffle($spcl_char);
+        $spcl_char = substr($spcl_char, 0, 5);
+        
+
+        $Full_name = strtolower($Full_name);
+        $City = strtolower($City);
+        $state = strtolower($state);
+        $string = $City . $state;
+        $com = $string . $Full_name;
+        $com = str_split($com);
+        $alphabets = str_split("abcdefghijklmnopqrstvuwxyz");
+        $string = str_split($string);
+        $name = str_split($Full_name);
+        $arr = null;
+        $ex = null;
+        $count = 0;
+        for ($x = 0; $x < count($string); $x++) {
+            $count = 0;
+            for ($y = 0; $y < count($name); $y++) {
+                if ($string[$x] == $name[$y]) {
+                    $count = 1;
+                }
+            }
+            if ($count == 0) {
+                $arr.= $string[$x];
+            }
+        }
+
+        if (strlen($arr) < 11) {
+            $length = strlen($arr);
+            for ($x = 0; $x < count($alphabets); $x++) {
+                $count = 0;
+                for ($y = 0; $y < count($com); $y++) {
+                    if ($alphabets[$x] == $com[$y]) {
+                        $count = 1;
+                    }
+                }
+                if ($count == 0) {
+                    $ex.= $alphabets[$x];
+                }
+                if (strlen($ex) + $length == 11) {
+                    $x = count($alphabets);
+                }
+            }
+        }
+
+        $string = $arr . $ex;
+
+        $upper = strtoupper(substr($string, 0, 2));
+        $rand = str_shuffle($spcl_char . $hours . $upper);
+        $str = str_shuffle(substr($string, 2, 9));
+
+
+        $message = substr($str, 0, 4) . $rand . substr($str, 4, 5);
+          $Email = Input::get('Email');
+
+            $val = Mail::raw($message, function ($message)use($Email) {
+
+                        $message->from('kaveri.nagunuri@karmanya.co.in', 'kaveri');
+                        $message->to($Email)->subject("Generated Password");
+                    });
+                    return $message;
+
     }
 
 }

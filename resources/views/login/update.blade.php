@@ -82,7 +82,21 @@
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                         <span class="error" id="Email_error"></span>
                     </div>
+        
         @endif
+        @if(isset($credit))
+         <div class="form-group has-feedback">
+             <label for="credit">Credit Card Number</label>{{$credit}}
+                        
+                    </div>
+        @else
+        <div class="form-group has-feedback">
+             <input type="text" class="form-control" placeholder="Credit Card Number" id="credit" name="credit" maxlength="16"  />
+                        <span class="glyphicon glyphicon-barcode form-control-feedback"></span>
+                          <span class="error" id="credit_error"></span>
+                    </div>
+        @endif
+        
       <div class="row">
  <div class='col-xs-4'>
      <a href="{{URL::route('LteRegister')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>

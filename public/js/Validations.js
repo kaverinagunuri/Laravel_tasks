@@ -96,6 +96,22 @@ $(document).ready(function () {
            return true;
 }
    });
+   $("#credit").keyup(function(){
+        var first = $("#credit").val();
+        if (first === "")
+        {
+            $("#credit_error").html("Credit card field should not be empty");
+            return false;
+        }
+        else if(first.length<15)
+        {
+             $("#credit_error").html("Credit card number should be atleast 16 chracters");
+            return false;
+        }else{
+          $("#credit_error").html(""); 
+           return true;
+}
+   });
   
 //    $("#next").click(function () {
 //        var fullname = ValidateFullName();
@@ -150,9 +166,10 @@ $(document).ready(function () {
        var address=ValidateAddress();
        var Email = ValidateEmail();
         var Mobile=ValidateMobile();
+        var card=ValidateCard()
      
        
-   if(Email==false || Mobile==false || fullname==false || City==false || address==false)
+   if(Email==false || Mobile==false || fullname==false || City==false || address==false|| card==false)
    {
        event.preventDefault();
    }
@@ -165,6 +182,18 @@ $(document).ready(function () {
      
        
    if(Email==false || password==false)
+   {
+       event.preventDefault();
+   }
+   
+   });
+    $("#forgot").click(function(event){
+      
+       var Email = ValidateEmail();
+      
+     
+       
+   if(Email==false)
    {
        event.preventDefault();
    }
@@ -316,6 +345,23 @@ function upload(){
          $("#file_error").html("");
            return true;
     }
+}
+function ValidateCard(){
+    var first = $("#credit").val();
+
+        if (first === "")
+        {
+            $("#credit_error").html("Credit card field should not be empty");
+            return false;
+        }
+        else if(first.length<15)
+        {
+             $("#credit_error").html("Credit card number should be atleast 16 chracters");
+            return false;
+        }else{
+          $("#credit_error").html(""); 
+           return true;
+}
 }
 //function submit(event){
 //    alert("cdff");

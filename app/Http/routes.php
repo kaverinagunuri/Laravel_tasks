@@ -82,5 +82,12 @@ Route::get('json',array(
     'as'=>'json',
     'uses'=>'LaravelTaskController@json'
 ));
+Route::get('Forgot',array(
+    'as'=>'Forgot',
+    'uses'=>'LaravelTaskController@Forgot'
+));
 
-
+Route::post('ForgotPassword',array(
+    'as'=>'ForgotPassword',
+    'uses'=>'LaravelTaskController@ForgotPassword'
+));
