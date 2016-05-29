@@ -16,13 +16,13 @@
         <link rel="stylesheet" href="{{asset('/dist/css/AdminLTE.min.css')}}">
         <!-- iCheck -->
         <link rel="stylesheet" href="{{asset('/plugins/iCheck/square/blue.css')}}">
-     
+
         <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-		<script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
-                <script src="{{asset('js/progress.js')}}"></script>
-           
-                  <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
-                 
+        <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
+        <script src="{{asset('js/progress.js')}}"></script>
+
+        <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+
 
     </head>
     <body class="hold-transition login-page">
@@ -39,31 +39,33 @@
                     <input type="hidden" name="_token" value="{{csrf_token()}}"/>
 
                     <div class='formarea'>
-                       
-                         <div class="form-group has-feedback">
-                       
-                        <input type='file' name='file' id="file" />
-                       
-         <span class="error" id="file_error"></span>
-                         </div>  
-                        
+
+                        <div class="form-group has-feedback">
+
+                            <input type='file' name='file' id="file" />
+
+                            <span class="error" id="file_error"></span>
+                        </div>  
+
                         <div id="bararea">
                             <div id="bar"></div>
                         </div>
                         <div id='percent'></div>
                         <div id='status'></div>
                     </div>
-                     <input type="submit" name="upload" id="upload" class="btn btn-primary btn-sm" value="Upload"/>
-      
-                        
+                    <input type="submit" name="upload" id="upload" class="btn btn-primary btn-sm" value="Upload"/>
+                    <div class='col-xs-4'>
+                        <a href="{{URL::route('loggedin')}}"><input type="button" class="btn btn-primary " value="BACK"></a>
+                    </div>
+
                 </form>
 
-                    <!-- /.social-auth-links -->
+                <!-- /.social-auth-links -->
 
             </div>
             <!-- /.login-box-body -->
         </div>
 
     </body>
-    
+
 </html>

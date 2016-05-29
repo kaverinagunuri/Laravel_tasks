@@ -24,19 +24,75 @@
 var Data = <?php echo ($data); ?>;
 
 $(document).ready(function () {
+
     $('#example').DataTable({
         data: Data,
         columns: [
             {title: "Id", data: "Id"},
-            {title: "File", data: "File"},
-            {title: "Type", data: "Type"},
-            {title: "Size", data: "Size"},
+            {title: "Name", data: "Name"},
+            {title: "Offset", data: "Offset"}
+
+
+
         ]
 
     });
     var table = $('#example').DataTable();
-
+    //                editor = new $.fn.dataTable.Editor( {
+    //      data:Data,
+    //        "table": "#example",
+    //        "fields": [ {
+    //                "label": "Id:",
+    //                "name": "Id"
+    //            }, {
+    //                "label": "Name:",
+    //                "name": "Name"
+    //            }, {
+    //                "label": "Offset:",
+    //                "name": "Offset"
+    //            }
+    //        ]
+    //    } );
+    // 
+    //               // var table = $('#example').DataTable();
+    //                $('#example').on('click', 'a.editor_edit', function (e) {
+    //        e.preventDefault();
+    // 
+    //        editor.edit( $(this).closest('tr'), {
+    //            title: 'Edit record',
+    //            buttons: 'Update'
+    //        } );
+    //    } );
+    //$('#example').on('click', 'a.editor_remove', function (e) {
+    //        e.preventDefault();
+    // 
+    //        editor.remove( $(this).closest('tr'), {
+    //            title: 'Delete record',
+    //            message: 'Are you sure you wish to remove this record?',
+    //            buttons: 'Delete'
+    //        } );
+    //    } );
+    //$('#example').DataTable( {
+    //       data:Data,
+    //        columns: [
+    //            { data: null, render: function ( data, type, row ) {
+    //                // Combine the first and last names into a single table field
+    //                return data.first_name+' '+data.last_name;
+    //            } },
+    //            { data: "Id" },
+    //            { data: "Name" },
+    //           
+    //            { data: "Offset", render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) },
+    //            {
+    //                data: null,
+    //                className: "center",
+    //                defaultContent: '<a href="" class="editor_edit">Edit</a> / <a href="" class="editor_remove">Delete</a>'
+    //            }
+    //        ]
+    //    } );
 });
+
+
         </script>
 
 
@@ -53,6 +109,13 @@ $(document).ready(function () {
 
                 <form class="form-group"  id="UserProfile" method="post" enctype="multipart/form-data" >
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <!--             <tr>
+                        
+                        <th>Id.</th>
+                        <th>Name</th>
+                        <th>Offset</th>
+                        <th>Edit / Delete</th>
+                    </tr>-->
                     </table>
                     <div class='col-xs-4'>
                         <a href="{{URL::route('loggedin')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>

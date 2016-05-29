@@ -426,6 +426,7 @@
                             <ul class="treeview-menu">
                                 <li><a href="{{URL::route('FileUpload')}}"><i class="fa fa-circle-o"></i> File Upload</a></li>
                                 <li><a href="{{URL::route('json')}}"><i class="fa fa-circle-o"></i> View Files</a></li>
+                                <li><a href="{{URL::route('timezone')}}"><i class="fa fa-circle-o"></i>Time Zone</a></li>
 
                                 <li><a href="{{URL::route('maps')}}"><i class="fa fa-circle-o"></i> User Location</a></li>
                                 <li><a href="{{URL::route('UpdateProfile')}}"><i class="fa fa-circle-o"></i> Update Profile</a></li>

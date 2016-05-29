@@ -43,7 +43,9 @@
          <span class="error" id="PasswordError"></span>
       </div>
       <div class="row">
-       
+          <div class='col-xs-4'>
+              <a href="{{URL::route('loggedin')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
+          </div>
         <!-- /.col -->
         <div class="col-xs-4">
           <button type="submit" name="change" id="change" class="btn btn-primary btn-block btn-flat">Change</button>

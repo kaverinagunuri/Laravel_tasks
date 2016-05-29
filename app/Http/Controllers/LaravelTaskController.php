@@ -32,6 +32,8 @@ use Illuminate\Http\Request;
 use App\Uploads;
 use App\Logs;
 use Illuminate\Support\Facades\Crypt;
+use DateTimeZone;
+use App\TimeZone;
 
 class LaravelTaskController extends BaseController {
 
@@ -42,20 +44,19 @@ class LaravelTaskController extends BaseController {
 
     public function adminlte() {
         session()->regenerate();
-      Session::destroy();
+        Session::destroy();
         return view('layouts.index');
     }
 
     public function LteRegister() {
-         session()->regenerate();
-       Session::destroy();
+        session()->regenerate();
+        Session::destroy();
         return view('registration.register');
     }
 
     public function LteLogin() {
-         session()->regenerate();
-         
-      // Session::destroy();
+        session()->regenerate();
+
         return view('layouts.login');
     }
 
@@ -75,7 +76,7 @@ class LaravelTaskController extends BaseController {
 
     public function submitform() {
         session()->regenerate();
-      
+
         $Email = Input::get('Email');
         $Mobile = Input::get('Mobile');
         session(['Email' => $Email, 'Mobile' => $Mobile]);
@@ -91,14 +92,14 @@ class LaravelTaskController extends BaseController {
     }
 
     public function Onconfirm() {
-           $info=null;
+        $info = null;
         $Full_name = Input::get('Full_name');
         $Address = Input::get('Address');
         $City = Input::get('City');
         $state = Input::get('state');
         $Email = Input::get('Email');
-        $object=new LaravelTaskController();
-        $message=$object->generatePassword($Full_name, $City, $state);
+        $object = new LaravelTaskController();
+        $message = $object->generatePassword($Full_name, $City, $state);
         echo $message;
 
         $validator = Validator::make(Input::all(), array(
@@ -114,8 +115,8 @@ class LaravelTaskController extends BaseController {
                             ->withErrors($validator)
                             ->withInput();
         } else {
-          
-            
+
+
             $Full_name = Input::get('Full_name');
             $Address = Input::get('Address');
             $City = Input::get('City');
@@ -131,8 +132,8 @@ class LaravelTaskController extends BaseController {
                 $info.="There is a problem in registration.Please try Again!";
             }
         }
-      
-       return view('registration.register', ['message' => $info]);
+
+        return view('registration.register', ['message' => $info]);
     }
 
     public function loggedin(Request $request) {
@@ -226,20 +227,20 @@ class LaravelTaskController extends BaseController {
                 'pattern' => $pattern
             );
             $yourbrowser = ['userAgent' => $u_agent, 'name' => $bname, 'version' => $version, 'platform' => $platform, 'pattern' => $pattern];
-                 $jsonDetails =  json_encode($yourbrowser);
- 
+            $jsonDetails = json_encode($yourbrowser);
+
             Logs::create(['UserAgent' => $jsonDetails,
-                        'IpAddress' => $input['ip'],
-                        'BrowserName' => $yourbrowser['name'],
-                        'Version' => $yourbrowser['version'],
-                        'Platform' => $yourbrowser['platform'],
-                          'Email'=>Session::get('Email'),
-               ]);
-            $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform','updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
-         
+                'IpAddress' => $input['ip'],
+                'BrowserName' => $yourbrowser['name'],
+                'Version' => $yourbrowser['version'],
+                'Platform' => $yourbrowser['platform'],
+                'Email' => Session::get('Email'),
+            ]);
+            $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform', 'updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
+
 //($browserDetails);
-           
-           return view('login.logdetails', ['logs' => $browserDetails]);
+
+            return view('login.logdetails', ['logs' => $browserDetails]);
 
             //return Redirect::route('adminlte');
         } else {
@@ -250,14 +251,14 @@ class LaravelTaskController extends BaseController {
 
     public function UpdateProfile() {
         session()->regenerate();
-        $value=null;
-        $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile','CreditCard')->where('Email', Session::get('Email'))->first();
-     $value=$browserDetails['CreditCard'];
-    
-        $card=Crypt::decrypt($value);
-       echo $card;
- 
-        return view('login.update', ['info' => $browserDetails,'credit'=>$card]);
+        $value = null;
+        $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile', 'CreditCard')->where('Email', Session::get('Email'))->first();
+        $value = $browserDetails['CreditCard'];
+
+        $card = Crypt::decrypt($value);
+        echo $card;
+
+        return view('login.update', ['info' => $browserDetails, 'credit' => $card]);
     }
 
     public function onupdate() {
@@ -269,130 +270,123 @@ class LaravelTaskController extends BaseController {
         $state = Input::get('state');
         $Email = Input::get('Email');
         $Mobile = Input::get('Mobile');
-        $card=Input::get('credit');
-       $card=Crypt::encrypt($card);
-    
-       $update= AddUser::where('Id', Session::get('Id'))->update([
+        $card = Input::get('credit');
+        $card = Crypt::encrypt($card);
+
+        $update = AddUser::where('Id', Session::get('Id'))->update([
             'Full_name' => $Full_name,
             'Address' => $Address,
             'City' => $City,
             'State' => $state,
             'Email' => $Email,
             'Mobile' => $Mobile,
-           'CreditCard'=>$card
+            'CreditCard' => $card
         ]);
-       if($update){
-        return Redirect::route('UpdateProfile')
-                           ->with('update','Successfully Updated');
-       }
-       else{
-          return Redirect::route('UpdateProfile')
-                           ->with('update','Problem in updating'); 
-       }
+        if ($update) {
+            return Redirect::route('UpdateProfile')
+                            ->with('update', 'Successfully Updated');
+        } else {
+            return Redirect::route('UpdateProfile')
+                            ->with('update', 'Problem in updating');
+        }
     }
 
     public function ChangePassword() {
-        session()->regenerate(); 
-          $password = AddUser::select('Password')->where('Id', Session::get('Id'))->first();
+        session()->regenerate();
+        $password = AddUser::select('Password')->where('Id', Session::get('Id'))->first();
         $password = json_decode(json_encode($password), TRUE);
-          return view('login.changepassword', ['password' => $password]);
-       
+        return view('login.changepassword', ['password' => $password]);
     }
+
     public function password() {
-      session()->regenerate();  
-       $password = Input::get('Password');
+        session()->regenerate();
+        $password = Input::get('Password');
         $password = md5($password);
-       $update= AddUser::where('Id', Session::get('Id'))->update([
+        $update = AddUser::where('Id', Session::get('Id'))->update([
             'Password' => $password,
-            
         ]);
-       if($update){
-        return Redirect::route('ChangePassword')
-                           ->with('password','Successfully Updated');
-       }
-       else{
-          return Redirect::route('ChangePassword')
-                           ->with('password','Problem in updating.Try again later!'); 
-       }
-        
+        if ($update) {
+            return Redirect::route('ChangePassword')
+                            ->with('password', 'Successfully Updated');
+        } else {
+            return Redirect::route('ChangePassword')
+                            ->with('password', 'Problem in updating.Try again later!');
+        }
     }
+
     public function logout() {
-         session()->regenerate(); 
-         session(['Id'=>null,'Email'=>null]);
-         return Redirect::route('LteLogin')
-                         ->with('logout','sucessfully logged out');
-        
+        session()->regenerate();
+        session(['Id' => null, 'Email' => null]);
+        return Redirect::route('LteLogin')
+                        ->with('logout', 'sucessfully logged out');
     }
+
     public function FileUpload() {
-      return view('FileUpload.fileupload');
+        return view('FileUpload.fileupload');
     }
+
     public function maps() {
         return view('layouts.location');
     }
-    public function upload(){
-       $input = Input::file('file');
-      
-     $file_name=$input->getClientOriginalName();
-      $file_size=$input->getClientSize();
-      $file_type=$input->getClientMimeType();
-    
 
-    
-     
-    $input->move("images", $input->getClientOriginalName());
-    
-   Uploads::create(['File' => $file_name, 'Type' => $file_type, 'Size' => $file_size,'Email'=>Session::get('Email')]);
-       
-         
+    public function upload() {
+        $input = Input::file('file');
 
- 
-  
+        $file_name = $input->getClientOriginalName();
+        $file_size = $input->getClientSize();
+        $file_type = $input->getClientMimeType();
+
+
+
+
+        $input->move("images", $input->getClientOriginalName());
+
+        Uploads::create(['File' => $file_name, 'Type' => $file_type, 'Size' => $file_size, 'Email' => Session::get('Email')]);
     }
+
     public function json() {
         $output_array = [];
         session()->regenerate();
-         $get_file=Uploads::select('Id','File', 'Type', 'Size')
-                ->where('Email',Session::get('Email'))->get();
-           // $get_file = json_decode(json_encode($get_file), TRUE);
-          
-        $data=$get_file; 
-            //$get_file= json_encode($get_file);
-             return view('FileUpload.uploadfiles',['data'=>$data]);
-           
-        
+        $get_file = Uploads::select('Id', 'File', 'Type', 'Size')
+                        ->where('Email', Session::get('Email'))->get();
+        // $get_file = json_decode(json_encode($get_file), TRUE);
+
+        $data = $get_file;
+        //$get_file= json_encode($get_file);
+        return view('FileUpload.uploadfiles', ['data' => $data]);
     }
+
     public function Forgot() {
         return view('login.Forgot');
     }
+
     public function ForgotPassword() {
         session()->regenerate();
 
         $Email = Input::get('Email');
-          session(['Email' => $Email]);
-           $dbpwd = AddUser::select( 'Id','Full_name','Address','City','State')->where('Email', $Email)->first();
-           if($dbpwd){
-               $name=$dbpwd['Full_name'];
-               $Address=$dbpwd['Address'];
-               $City=$dbpwd['City'];
-               $State=$dbpwd['State'];
-               $object=new LaravelTaskController();
-               $message=$object->generatePassword($name, $City, $State);
-               echo $message;
-                if($message){
-                    $password=md5($message);
-                    AddUser::where('Email', $Email)->update(['Password'=>$password]);
-        return Redirect::route('LteLogin')
-                           ->with('password','Successfully Updated.Mail send to your respective Email ID');
-       }
-       else{
-          return Redirect::route('LteLogin')
-                           ->with('password','Problem in updating.Try again later!'); 
-       }
-           }
-          
+        session(['Email' => $Email]);
+        $dbpwd = AddUser::select('Id', 'Full_name', 'Address', 'City', 'State')->where('Email', $Email)->first();
+        if ($dbpwd) {
+            $name = $dbpwd['Full_name'];
+            $Address = $dbpwd['Address'];
+            $City = $dbpwd['City'];
+            $State = $dbpwd['State'];
+            $object = new LaravelTaskController();
+            $message = $object->generatePassword($name, $City, $State);
+            echo $message;
+            if ($message) {
+                $password = md5($message);
+                AddUser::where('Email', $Email)->update(['Password' => $password]);
+                return Redirect::route('LteLogin')
+                                ->with('password', 'Successfully Updated.Mail send to your respective Email ID');
+            } else {
+                return Redirect::route('LteLogin')
+                                ->with('password', 'Problem in updating.Try again later!');
+            }
+        }
     }
-    function generatePassword($Full_name,$City,$state)
-    {
+
+    function generatePassword($Full_name, $City, $state) {
         $info = null;
         $message = null;
         $ldate = new DateTime;
@@ -404,7 +398,7 @@ class LaravelTaskController extends BaseController {
         $spcl_char = '!@#$%&*()_=+]}[{;:,<.>?|';
         $spcl_char = str_shuffle($spcl_char);
         $spcl_char = substr($spcl_char, 0, 5);
-        
+
 
         $Full_name = strtolower($Full_name);
         $City = strtolower($City);
@@ -456,15 +450,58 @@ class LaravelTaskController extends BaseController {
 
 
         $message = substr($str, 0, 4) . $rand . substr($str, 4, 5);
-          $Email = Input::get('Email');
+        $Email = Input::get('Email');
 
-            $val = Mail::raw($message, function ($message)use($Email) {
+        $val = Mail::raw($message, function ($message)use($Email) {
 
-                        $message->from('kaveri.nagunuri@karmanya.co.in', 'kaveri');
-                        $message->to($Email)->subject("Generated Password");
-                    });
-                    return $message;
+                    $message->from('kaveri.nagunuri@karmanya.co.in', 'kaveri');
+                    $message->to($Email)->subject("Generated Password");
+                });
+        return $message;
+    }
 
+    public function timezone() {
+
+        function timezone_list() {
+            static $timezones = null;
+
+            if ($timezones === null) {
+                $timezones = [];
+                $offsets = [];
+                $now = new DateTime();
+
+                foreach (DateTimeZone::listIdentifiers() as $timezone) {
+                    $now->setTimezone(new DateTimeZone($timezone));
+                    $offsets[] = $offset = $now->getOffset();
+                    TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset)]);
+                    $timezones[$timezone] = '(' . format_GMT_offset($offset) . ') ' . format_timezone_name($timezone);
+                }
+            }
+
+            return $timezones;
+        }
+
+        function format_GMT_offset($offset) {
+            $hours = intval($offset / 3600);
+            $minutes = abs(intval($offset % 3600 / 60));
+            return 'GMT' . ($offset ? sprintf('%+03d:%02d', $hours, $minutes) : '');
+        }
+
+        function format_timezone_name($name) {
+            $name = str_replace('/', ', ', $name);
+            $name = str_replace('_', ' ', $name);
+            $name = str_replace('St ', 'St. ', $name);
+            return $name;
+        }
+
+// Uso
+        $timezone = timezone_list();
+//echo '<pre>';
+//    print_r($timezone);
+//echo '</pre>';
+        $data = TimeZone::select(['Id', 'Name', 'Offset'])->get();
+
+        return view('layouts.TimeZone', ['data' => $data]);
     }
 
 }

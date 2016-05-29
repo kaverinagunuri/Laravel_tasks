@@ -61,8 +61,8 @@
         </div>-->
         <!-- /.col -->
         <div class='col-xs-4'>
-                            <a href="{{URL::route('back')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
-                        </div>
+            <a href="{{URL::route('back')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
+        </div>
         <div class="col-sm-4">
             <button type="submit" id="confirm" class="btn btn-primary btn-block btn-flat">Confirm</button>
         </div>
