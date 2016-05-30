@@ -95,3 +95,35 @@ Route::get('timezone', array(
     'as' => 'timezone',
     'uses' => 'LaravelTaskController@timezone'
 ));
+Route::get('excelReg', array(
+    'as' => 'excelReg',
+    'uses' => 'LaravelTaskController@excelReg'
+));
+Route::get('excelLogs', array(
+    'as' => 'excelLogs',
+    'uses' => 'LaravelTaskController@excelLogs'
+));
+Route::get('excelFile', array(
+    'as' => 'excelFile',
+    'uses' => 'LaravelTaskController@excelFile'
+));
+Route::get('excelTimeZone', array(
+    'as' => 'excelTimeZone',
+    'uses' => 'LaravelTaskController@excelTimeZone'
+));
+Route::get('PDFReg', array(
+    'as' => 'PDFReg',
+    'uses' => 'LaravelTaskController@PDFReg'
+));
+Route::get('PDFlLogs', array(
+    'as' => 'PDFLogs',
+    'uses' => 'LaravelTaskController@PDFLogs'
+));
+Route::get('PDFFile', array(
+    'as' => 'PDFFile',
+    'uses' => 'LaravelTaskController@PDFFile'
+));
+Route::get('PDFTimeZone', array(
+    'as' => 'PDFTimeZone',
+    'uses' => 'LaravelTaskController@PDFTimeZone'
+));

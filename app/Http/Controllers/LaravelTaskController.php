@@ -34,7 +34,8 @@ use App\Logs;
 use Illuminate\Support\Facades\Crypt;
 use DateTimeZone;
 use App\TimeZone;
-
+use Excel;
+use PDF;
 class LaravelTaskController extends BaseController {
 
     use AuthorizesRequests,
@@ -471,9 +472,11 @@ class LaravelTaskController extends BaseController {
                 $now = new DateTime();
 
                 foreach (DateTimeZone::listIdentifiers() as $timezone) {
-                    $now->setTimezone(new DateTimeZone($timezone));
+                   $time= $now->setTimezone(new DateTimeZone($timezone));
+                   $time=  json_decode(json_encode($time),true);
+                // echo $time['date'];
                     $offsets[] = $offset = $now->getOffset();
-                    TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset)]);
+                    TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset),'Time'=>$time['date']]);
                     $timezones[$timezone] = '(' . format_GMT_offset($offset) . ') ' . format_timezone_name($timezone);
                 }
             }
@@ -499,9 +502,94 @@ class LaravelTaskController extends BaseController {
 //echo '<pre>';
 //    print_r($timezone);
 //echo '</pre>';
-        $data = TimeZone::select(['Id', 'Name', 'Offset'])->get();
+        $data = TimeZone::select(['Id', 'Name', 'Offset','Time'])->get();
 
         return view('layouts.TimeZone', ['data' => $data]);
+    }
+    public function excelReg() {
+       $users = AddUser::select('*')->get();
+Excel::create('Register', function($excel) use($users) {
+    $excel->sheet('Register', function($sheet) use($users) {
+        $sheet->fromArray($users);
+    });
+})->export('xls');
+
+        
+    }
+    public function excelLogs() {
+         $users = Logs::select('*')->get();
+Excel::create('Logs', function($excel) use($users) {
+    $excel->sheet('Logs', function($sheet) use($users) {
+        $sheet->fromArray($users);
+    });
+})->export('xls');
+
+
+        
+    }
+    public function excelFile() {
+         $users = Uploads::select('*')->get();
+Excel::create('FileUpload', function($excel) use($users) {
+    $excel->sheet('FileUpload', function($sheet) use($users) {
+        $sheet->fromArray($users);
+        
+    });
+})->export('xls');
+
+        
+    }
+    public function excelTimeZone() {
+         $users = TimeZone::select('*')->get();
+Excel::create('TimeZone', function($excel) use($users) {
+    $excel->sheet('TimeZone', function($sheet) use($users) {
+        $sheet->fromArray($users);
+    });
+})->export('xls');
+
+        
+    }
+ public function PDFReg() {
+       $users = AddUser::select('*')->get();
+Excel::create('Register', function($excel) use($users) {
+    $excel->sheet('Register', function($sheet) use($users) {
+        $sheet->fromArray($users);
+        $sheet->setPaper('4A0');
+        $sheet->setOrientation('landscape');
+    });
+})->export('pdf');
+
+        
+    }
+    public function PDFLogs() {
+         $users = Logs::select('*')->get();
+	Excel::create('Logs', function($excel) use ($users) {
+		$excel->sheet('mySheet', function($sheet) use ($users)
+	    {
+			$sheet->fromArray($users);
+	    });
+	   })->setPaper('a2')->setOrientation('landscape')->setWarnings(false)->download('pdf');
+ 
+        
+    }
+    public function PDFFile() {
+         $users = Uploads::select('*')->get();
+Excel::create('FileUpload', function($excel) use($users) {
+    $excel->sheet('FileUpload', function($sheet) use($users) {
+        $sheet->fromArray($users);
+    });
+})->export('pdf');
+
+        
+    }
+    public function PDFTimeZone() {
+         $users = TimeZone::select('*')->get();
+Excel::create('TimeZone', function($excel) use($users) {
+    $excel->sheet('TimeZone', function($sheet) use($users) {
+        $sheet->fromArray($users);
+    });
+})->export('pdf');
+
+        
     }
 
 }

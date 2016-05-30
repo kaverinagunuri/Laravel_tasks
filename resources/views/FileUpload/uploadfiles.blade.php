@@ -17,6 +17,7 @@
         <!-- iCheck -->
         <link rel="stylesheet" href="{{asset('/plugins/iCheck/square/blue.css')}}">
         <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="../../extensions/Editor/css/editor.dataTables.min.css" rel="stylesheet">
         <script src="{{asset('/js/jquery-2.2.2.min.js')}}"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 
@@ -54,9 +55,7 @@ $(document).ready(function () {
                 <form class="form-group"  id="UserProfile" method="post" enctype="multipart/form-data" >
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     </table>
-                    <div class='col-xs-4'>
-                        <a href="{{URL::route('loggedin')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
-                    </div>
+                   
                 </form>   
 
 

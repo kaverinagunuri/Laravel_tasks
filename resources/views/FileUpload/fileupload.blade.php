@@ -54,9 +54,7 @@
                         <div id='status'></div>
                     </div>
                     <input type="submit" name="upload" id="upload" class="btn btn-primary btn-sm" value="Upload"/>
-                    <div class='col-xs-4'>
-                        <a href="{{URL::route('loggedin')}}"><input type="button" class="btn btn-primary " value="BACK"></a>
-                    </div>
+                   
 
                 </form>
 
