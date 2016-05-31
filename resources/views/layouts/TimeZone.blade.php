@@ -16,102 +16,51 @@
         <link rel="stylesheet" href="{{asset('/dist/css/AdminLTE.min.css')}}">
         <!-- iCheck -->
         <link rel="stylesheet" href="{{asset('/plugins/iCheck/square/blue.css')}}">
-        <link rel="stylesheet" href="{{asset('../../extensions/Editor/css/editor.dataTables.min.css')}}">
-        <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
+          <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
         <script src="{{asset('/js/jquery-2.2.2.min.js')}}"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="../../extensions/Editor/js/dataTables.editor.min.js"></script>
-        <script>
+       
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+         <script>
 var Data = <?php echo ($data); ?>;
 
 $(document).ready(function () {
    
-var editor;
-//    $('#example').DataTable({
-//        data: Data,
-//        columns: [
-//            {title: "Id", data: "Id"},
-//            {title: "Name", data: "Name"},
-//            {title: "Offset", data: "Offset"}
-//
-//
-//
-//        ]
-//
-//    });
-//    var table = $('#example').DataTable();
-//                    editor = new $.fn.dataTable.Editor( {
-//          data:Data,
-//            "table": "#example",
-//            "fields": [ {
-//                    "label": "Id",
-//                    "name": "Id"
-//                }, {
-//                    "label": "Name",
-//                    "name": "Name"
-//                }, {
-//                    "label": "Offset",
-//                    "name": "Offset"
-//                }
-//            ]
-//        } );
-   
-                   // var table = $('#example').DataTable();
-                    $('#example').on('click', 'a.editor_edit', function (e) {
-            e.preventDefault();
-     
-            editor.edit( $(this).closest('tr'), {
-                title: 'Edit record',
-                buttons: 'Update'
-            } );
-        } );
-    $('#example').on('click', 'a.editor_remove', function (e) {
-            e.preventDefault();
-     
-            editor.remove( $(this).closest('tr'), {
-                title: 'Delete record',
-                message: 'Are you sure you wish to remove this record?',
-                buttons: 'Delete'
-            } );
-        } );
-    $('#example').DataTable( {
-         "scrollX": "300px",
-           data:Data,
-        
-            columns: [
-               
-                { title:"Id",data: "Id" },
-                { title:"Name",data: "Name" },
-               
-                { title:"Offset",data: "Offset", render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) },
-                {title:'Time',data:'Time'},   
-            {title:"Edit/Delete",
-                    data: null,
-                    className: "center",
-                    defaultContent: '<a href="" class="editor_edit">Edit</a> / <a href="" class="editor_remove">Delete</a>'
-                }
-            ]
-        } );
-        
-                         editor = new $.fn.dataTable.Editor( {
-          data:Data,
-            "table": "#example",
-            "fields": [ {
-                    "label": "Id",
-                    "name": "Id"
-                }, {
-                    "label": "Name",
-                    "name": "Name"
-                }, {
-                    "label": "Offset",
-                    "name": "Offset"
-                },{
-                    "label": "Time",
-                    "name": "Time"
-                }
-                
-            ]
-        } );
+
+    $('#example').DataTable({
+        data: Data,
+        columns: [
+            {title: "Id", data: "Id"},
+            {title: "Name", data: "Name"},
+            {title: "Offset", data: "Offset"},
+            {
+            "targets": -1,
+            "data": null,
+            "defaultContent": '<a href="" class="edit">Edit</a>/<a href="" class="delete">Delete</a>/<a href="" class="view">View</a>'
+        } 
+
+        ]
+
+    });
+    var table=$('#example').DataTable();
+     $('#example tbody').on( 'click', 'a', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+     // var data=jQuery.parseJSON( data );
+       // alert( data["Id"] +"'s salary is: "+ data["Id"] );
+      window.location.href = '/view/' + data[0];
+    } );
+     $('#example tbody').on( 'click', 'a', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+     // var data=jQuery.parseJSON( data );
+       // alert( data["Id"] +"'s salary is: "+ data["Id"] );
+      window.location.href = '/view/' + data[0];
+    } );
+     $('#example tbody').on( 'click', 'a', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+     // var data=jQuery.parseJSON( data );
+       // alert( data["Id"] +"'s salary is: "+ data["Id"] );
+      window.location.href = '/view/' + data[0];
+    } );
+
            
 });
 

@@ -45,13 +45,13 @@ class LaravelTaskController extends BaseController {
 
     public function adminlte() {
         session()->regenerate();
-        Session::destroy();
+      
         return view('layouts.index');
     }
 
     public function LteRegister() {
         session()->regenerate();
-        Session::destroy();
+       
         return view('registration.register');
     }
 
@@ -101,7 +101,7 @@ class LaravelTaskController extends BaseController {
         $Email = Input::get('Email');
         $object = new LaravelTaskController();
         $message = $object->generatePassword($Full_name, $City, $state);
-        echo $message;
+    
 
         $validator = Validator::make(Input::all(), array(
                     'Email' => 'required|max:50|email',
@@ -257,7 +257,7 @@ class LaravelTaskController extends BaseController {
         $value = $browserDetails['CreditCard'];
 
         $card = Crypt::decrypt($value);
-        echo $card;
+       // echo $card;
 
         return view('login.update', ['info' => $browserDetails, 'credit' => $card]);
     }
@@ -592,4 +592,10 @@ Excel::create('TimeZone', function($excel) use($users) {
         
     }
 
+
+
+public function view() {
+    echo hai;
 }
+}
+

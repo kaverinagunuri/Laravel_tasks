@@ -1,5 +1,6 @@
 
     $(document).ready(function () {
+      
         var bar = $('#bar')
         var percent = $('#percent');
         var status = $('#status');

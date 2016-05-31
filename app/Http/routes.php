@@ -127,3 +127,7 @@ Route::get('PDFTimeZone', array(
     'as' => 'PDFTimeZone',
     'uses' => 'LaravelTaskController@PDFTimeZone'
 ));
+Route::get('/dataTimeZone/{data}', array(
+   'as' => 'dataTimeZone',
+   'uses' => 'AdminController@dataTimeZone'
+));
