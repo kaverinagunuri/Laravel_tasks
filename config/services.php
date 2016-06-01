@@ -34,5 +34,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'facebook' => [
+    'client_id' => '1724125987839496',
+    'client_secret' => '60076d0f59a8623a6d36179160080758',
+    'redirect' => 'http://laravel-tasks.karmanya.dev/facebook/callback',
+],
 
 ];

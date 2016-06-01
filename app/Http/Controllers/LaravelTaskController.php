@@ -594,8 +594,15 @@ Excel::create('TimeZone', function($excel) use($users) {
 
 
 
-public function view() {
-    echo hai;
+public function view($data) {
+    $view=TimeZone::select('*')->where('Id',$data)->get();
+    return view('layouts.DbView',['view'=>$view]);
+}
+public function edit($data) {
+    echo $data;
+}
+public function delete($data) {
+    echo $data;
 }
 }
 

@@ -127,7 +127,12 @@ Route::get('PDFTimeZone', array(
     'as' => 'PDFTimeZone',
     'uses' => 'LaravelTaskController@PDFTimeZone'
 ));
-Route::get('/dataTimeZone/{data}', array(
-   'as' => 'dataTimeZone',
-   'uses' => 'AdminController@dataTimeZone'
+Route::get('facebook', array(
+    'as' => 'facebook',
+    'uses' => 'facebookController@redirectToProvider'
 ));
+
+//Route::get('facebook', 'facebookController@redirectToProvider');
+Route::get('facebook/callback', array(
+    'as'=>'facebook/callback',
+       'uses'=> 'facebookController@handleProviderCallback'));

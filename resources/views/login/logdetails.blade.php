@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')  
-<link rel="stylesheet" href="{{asset('../../extensions/Editor/css/editor.dataTables.min.css')}}">
+<!--<link rel="stylesheet" href="{{asset('../../extensions/Editor/css/editor.dataTables.min.css')}}">
         <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
        <script src="{{asset('/js/jquery-2.2.2.min.js')}}"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../../extensions/Editor/js/dataTables.editor.min.js"></script>
-      
+      -->
                             <div class="box box-success">
                                 <div class="box-header">
                                     <i class="glyphicon glyphicon-home"></i>
