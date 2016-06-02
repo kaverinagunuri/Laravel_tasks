@@ -62,15 +62,15 @@
                         <!-- /.col -->
                     </div>
                 </form>
-  <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="{{URL::route('facebook')}}" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div>
+                <div class="social-auth-links text-center">
+                    <p>- OR -</p>
+                    <a href="{{URL::route('facebook')}}" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
+                        Facebook</a>
+                    <a href="{{URL::route('google')}}" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
+                        Google+</a>
+                    <a href="{{URL::route('linkedin')}}" class="btn btn-block btn-social btn-linkedin btn-flat"><i class="fa fa-linkedin"></i> Sign in using
+                        LinkedIn</a>
+                </div>
                 <!-- /.social-auth-links -->
 
                 <a href="{{URL::route('Forgot')}}"class="text-center">I forgot my password</a><br>

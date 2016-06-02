@@ -1,10 +1,7 @@
  @extends('layouts.app')
 @section('content') 
    
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-        <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
-        <script src="{{asset('js/progress.js')}}"></script>
-
+   
 <div class="col-md-6 col-md-offset-3">
                 <p class="login-box-msg">File Upload Progress Bar Example</p>
 

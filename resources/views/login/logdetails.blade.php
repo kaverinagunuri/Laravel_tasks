@@ -1,12 +1,7 @@
 @extends('layouts.app')
 @section('content')  
-<!--<link rel="stylesheet" href="{{asset('../../extensions/Editor/css/editor.dataTables.min.css')}}">
-        <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
-       <script src="{{asset('/js/jquery-2.2.2.min.js')}}"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="../../extensions/Editor/js/dataTables.editor.min.js"></script>
-      -->
-                            <div class="box box-success">
+
+                   <div class="box box-success">
                                 <div class="box-header">
                                     <i class="glyphicon glyphicon-home"></i>
 
@@ -45,36 +40,17 @@
 
                                 </div>
                               
-                                    <table id="example" class="table table-striped table-bordered" cellspacing="0">
+                                    <table id="logtable" class="table table-striped table-bordered" cellspacing="0">
                                     </table>
 
-                            
+                                <input type="hidden" id="logs" value="{{$logs}}"/>
 
                                 
                             </div>
         
        
         <script>
-       var Data = <?php echo ($logs); ?>;
-
-       $(document).ready(function () {
-           $('#example').DataTable({
-           
-            
-               data: Data,
-               columns: [
-                   {title: "UserAgent", data: "UserAgent"},
-                   {title: "IpAddress", data: "IpAddress"},
-                   {title: "BrowserName", data: "BrowserName"},
-                   {title: "Version", data: "Version"},
-                   {title: "Last Logged ", data: "updated_at"},
-                   {title: "Platform", data: "Platform"},
-               ]
-
-           });
-           var table = $('#example').DataTable();
-
-       });
+      
         </script>
-    @endsection
-
+  
+@stop

@@ -150,20 +150,33 @@ class LaravelTaskController extends BaseController {
         session(['Id' => $dbpwd['Id']]);
 
         if ($hashpassword == $dbpwd['Password']) {
-            $ipAddress = $_SERVER['REMOTE_ADDR'];
+           $object=new LaravelTaskController();
+           $logs=$object->LogDetails($request);
+
+            return view('login.logdetails', ['logs' => $logs]);
+
+      
+        } else {
+            $error = "invalid credentials";
+            return view('layouts.login', ['error' => $error]);
+        }
+    }
+    public function LogDetails($request){
+        session()->regenerate();
+    Session::get('Email');
+         $ipAddress = $_SERVER['REMOTE_ADDR'];
             if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
                 $ipAddress = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
             }
 
             $user['useragent'] = $request->server('HTTP_USER_AGENT');
             $input['ip'] = $request->ip();
-            // print_r($user);
-            //print_r($input);
+            
             $u_agent = $_SERVER['HTTP_USER_AGENT'];
             $bname = 'Unknown';
             $platform = 'Unknown';
             $version = "";
-            //First get the platform?
+         
             if (preg_match('/linux/i', $u_agent)) {
                 $platform = 'linux';
             } elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
@@ -172,7 +185,6 @@ class LaravelTaskController extends BaseController {
                 $platform = 'windows';
             }
 
-            // Next get the name of the useragent yes seperately and for good reason
             if (preg_match('/MSIE/i', $u_agent) && !preg_match('/Opera/i', $u_agent)) {
                 $bname = 'Internet Explorer';
                 $ub = "MSIE";
@@ -193,19 +205,16 @@ class LaravelTaskController extends BaseController {
                 $ub = "Netscape";
             }
 
-            // finally get the correct version number
             $known = array('Version', $ub, 'other');
             $pattern = '#(?<browser>' . join('|', $known) .
                     ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
             if (!preg_match_all($pattern, $u_agent, $matches)) {
-                // we have no matching number just continue
+              
             }
 
-            // see how many we have
             $i = count($matches['browser']);
             if ($i != 1) {
-                //we will have two since we are not using 'other' argument yet
-                //see if version is before or after the name
+                
                 if (strripos($u_agent, "Version") < strripos($u_agent, $ub)) {
                     $version = $matches['version'][0];
                 } else {
@@ -215,7 +224,6 @@ class LaravelTaskController extends BaseController {
                 $version = $matches['version'][0];
             }
 
-            // check if we have a number
             if ($version == null || $version == "") {
                 $version = "?";
             }
@@ -238,28 +246,29 @@ class LaravelTaskController extends BaseController {
                 'Email' => Session::get('Email'),
             ]);
             $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform', 'updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
+          return $browserDetails;
 
-//($browserDetails);
+        
+    }
+    public function Dashboard(Request $request) {
+         $object=new LaravelTaskController();
+           $logs=$object->LogDetails($request);
 
-            return view('login.logdetails', ['logs' => $browserDetails]);
+            return view('login.logdetails', ['logs' => $logs]);
 
-            //return Redirect::route('adminlte');
-        } else {
-            $error = "invalid credentials";
-            return view('layouts.login', ['error' => $error]);
-        }
+        
     }
 
     public function UpdateProfile() {
         session()->regenerate();
         $value = null;
         $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile', 'CreditCard')->where('Email', Session::get('Email'))->first();
-        $value = $browserDetails['CreditCard'];
+//        $value = $browserDetails['CreditCard'];
+//
+//        $card = Crypt::decrypt($value);
+//       // echo $card;
 
-        $card = Crypt::decrypt($value);
-       // echo $card;
-
-        return view('login.update', ['info' => $browserDetails, 'credit' => $card]);
+        return view('login.update', ['info' => $browserDetails]);
     }
 
     public function onupdate() {
@@ -497,11 +506,9 @@ class LaravelTaskController extends BaseController {
             return $name;
         }
 
-// Uso
+
         $timezone = timezone_list();
-//echo '<pre>';
-//    print_r($timezone);
-//echo '</pre>';
+
         $data = TimeZone::select(['Id', 'Name', 'Offset','Time'])->get();
 
         return view('layouts.TimeZone', ['data' => $data]);

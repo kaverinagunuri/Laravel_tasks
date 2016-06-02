@@ -127,12 +127,36 @@ Route::get('PDFTimeZone', array(
     'as' => 'PDFTimeZone',
     'uses' => 'LaravelTaskController@PDFTimeZone'
 ));
+Route::get('Dashboard',array(
+    'as'=>'Dashboard',
+    'uses'=>'LaravelTaskController@Dashboard'
+));
 Route::get('facebook', array(
     'as' => 'facebook',
-    'uses' => 'facebookController@redirectToProvider'
+    'uses' => 'SocialiteController@facebook'
 ));
 
-//Route::get('facebook', 'facebookController@redirectToProvider');
+
 Route::get('facebook/callback', array(
-    'as'=>'facebook/callback',
-       'uses'=> 'facebookController@handleProviderCallback'));
+    'as' => 'facebook/callback',
+    'uses' => 'SocialiteController@facebookCallback'));
+
+Route::get('google', array(
+    'as' => 'google',
+    'uses' => 'SocialiteController@google'
+));
+
+
+Route::get('google/callback', array(
+    'as' => 'google/callback',
+    'uses' => 'SocialiteController@googleCallback'));
+
+Route::get('LinkedIn', array(
+    'as' => 'linkedin',
+    'uses' => 'SocialiteController@LinkedIn'
+));
+
+
+Route::get('linkedIn/callback', array(
+    'as' => 'linkedIn/callback',
+    'uses' => 'SocialiteController@LinkedInCallback'));
