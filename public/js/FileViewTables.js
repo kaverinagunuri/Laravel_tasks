@@ -1,9 +1,10 @@
-var Data = $("#files").val();
 
 
+$(document).ready(function () {
+     var Data = $("#files").val();
   
     $('#FileView').DataTable({
-        data: Data,
+        data: JSON.parse(Data),
         columns: [
             {title: "Id", data: "Id"},
             {title: "File", data: "File"},
@@ -12,5 +13,8 @@ var Data = $("#files").val();
         ]
 
     });
-    var table = $('#FileView').DataTable();
+  
 
+   });
+       
+          

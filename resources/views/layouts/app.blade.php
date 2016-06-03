@@ -7,33 +7,33 @@
 
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
-        <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+        <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
 
-        <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+        <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
 
-        <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+        <link rel="stylesheet" href="/plugins/iCheck/flat/blue.css">
 
-        <link rel="stylesheet" href="plugins/morris/morris.css">
+        <link rel="stylesheet" href="/plugins/morris/morris.css">
 
-        <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+        <link rel="stylesheet" href="/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
 
-        <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+        <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
 
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
+        <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker-bs3.css">
 
-        <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+        <link rel="stylesheet" href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
         <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="{{asset('css/map.css')}}">
         <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
-       
+
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -72,7 +72,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                        <img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Support Team
@@ -85,7 +85,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="/dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         AdminLTE Design Team
@@ -97,7 +97,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="/dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Developers
@@ -109,7 +109,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="/dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Sales Department
@@ -251,16 +251,17 @@
                                     </li>
                                 </ul>
                             </li>
+                            
 
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                    <img src="/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
                                     <span class="hidden-xs">User</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                        <img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                         <p>
                                             Alexander Pierce - Web Developer
@@ -295,7 +296,7 @@
                             </li>
                             <!-- Control Sidebar Toggle Button -->
                             <li>
-                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                                <a href="{{URL::route('logout')}}" data-toggle="control-sidebar"><i class="glyphicon glyphicon-log-out"></i>Log Out</a>
                             </li>
                         </ul>
                     </div>
@@ -336,9 +337,9 @@
             </footer>
 
             <aside class="main-sidebar">
-                <!-- sidebar: style can be found in sidebar.less -->
+
                 <section class="sidebar">
-                    <!-- Sidebar user panel -->
+
                     <div class="user-panel">
                         <div class="pull-left image">
                             <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image" />
@@ -362,7 +363,7 @@
                     <ul class="sidebar-menu">
                         <li class="header">MAIN NAVIGATION</li>
 
-                        <li class="treeview ">
+                        <li class="treeview active ">
                             <a href="#">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 <span>Update Profile</span>
@@ -373,7 +374,7 @@
                             </ul>
                         </li>
 
-                        <li class="treeview" >
+                        <li class="treeview active" >
                             <a href="#">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 <span>Change Password</span>
@@ -383,7 +384,10 @@
                                 <li><a href="{{URL::route('ChangePassword')}}"><i class="fa fa-circle-o"></i> Change Password</a></li>
                             </ul>
                         </li>
-                        <li class="treeview ">
+                        <li class="treeview active">
+                            <a href="{{URL::route('viewProfile')}}"><i class="glyphicon glyphicon-eye-open"></i> View Profile</a>
+                        </li>
+                        <li class="treeview active">
                             <a href="#">
                                 <i class="glyphicon glyphicon-file"></i>
                                 <span>File Uploads</span>
@@ -418,7 +422,7 @@
                                 <li><a href="{{URL::route('PDFTimeZone')}}"><i class="fa fa-circle-o"></i> Export Time Zone to PDF</a></li>
                             </ul>
                         </li>
-                        <li class="treeview ">
+                        <li class="treeview active ">
                             <a href="#">
                                 <i class="glyphicon glyphicon-time"></i>
                                 <span>Time Zone</span>
@@ -434,61 +438,38 @@
                 <!-- /.sidebar -->
             </aside>
 
-           
+
             <div class="control-sidebar-bg"></div>
         </div>
-             <script src="{{asset('/js/jquery-2.2.2.min.js')}}"></script>
-       
-       <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+     
+        <script src="{{asset('/plugins/jQuery/jQuery-2.2.0.min.js')}}"></script>
+        <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="{{asset('/js/location.js')}}"></script>
+
+        <script type="text/javascript" src="{{asset('/js/map.js')}}"></script>
         <script type="text/javascript" src="{{asset('/js/Validations.js')}}"></script>
-        <script type="text/javascript" src="{{asset('/js/logs.js')}}"></script>
         <script src="{{asset('js/progress.js')}}"></script>
-        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-        <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
-        <script type="text/javascript" src="{{asset('/js/FileViewTables.js')}}"></script>
-        <script>
-$.widget.bridge('uibutton', $.ui.button);
-        </script>
-        
        
-        <script src = "bootstrap/js/bootstrap.min.js" ></script>
+        <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
+        <script src = "/bootstrap/js/bootstrap.min.js" ></script>
+        <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="plugins/morris/morris.min.js"></script>
+        <script src="/plugins/fastclick/fastclick.js"></script>
 
-        <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+        <script src="/dist/js/app.min.js"></script>
 
-        <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-        <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="/dist/js/pages/dashboard.js"></script>
 
-        <script src="plugins/knob/jquery.knob.js"></script>
+        <script src="/dist/js/demo.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-        <script src="plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="{{ asset ("/js/jquery-2.2.2.min.js") }}"></script>
 
-        <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+        <script src="{{asset('/plugins/datatables/jquery.dataTables.min.js')}}"></script> 
+        <script src="{{asset('/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+        @yield('script')
 
-        <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
-        <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-
-        <script src="plugins/fastclick/fastclick.js"></script>
-
-        <script src="dist/js/app.min.js"></script>
-
-        <script src="dist/js/pages/dashboard.js"></script>
-
-        <script src="dist/js/demo.js"></script>
-        <!-- jQuery 2.1.3 -->
-<script src="{{ asset ("/bower_components/admin-lte/plugins/jQuery/jQuery-2.1.3.min.js") }}"></script>
-<!-- Bootstrap 3.3.2 JS -->
-<script src="{{ asset ("/bower_components/admin-lte/bootstrap/js/bootstrap.min.js") }}" type="text/javascript"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset ("/bower_components/admin-lte/dist/js/app.min.js") }}" type="text/javascript"></script>
-<script src="{{asset('/plugins/datatables/jquery.dataTables.min.js')}}"></script> 
- <script src="{{asset('/plugins/datatables/dataTables.bootstrap.min.js')}}"></script> 
 
     </body>
 </html>

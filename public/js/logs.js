@@ -1,23 +1,21 @@
- var Data = $("#logs").val();
-console.log(Data);
 $(document).ready(function () {
-    alert("hai");
+     var Data = $("#logs").val();
            $('#logtable').DataTable({
            
             
-               data: Data,
+           data: JSON.parse(Data),
                columns: [
                    {title: "UserAgent", data: "UserAgent"},
                    {title: "IpAddress", data: "IpAddress"},
                    {title: "BrowserName", data: "BrowserName"},
                    {title: "Version", data: "Version"},
                    {title: "Platform", data: "Platform"},
-                   {title: "Last-Logged In", data: "updated_at"},
+                   {title: "Last-Logged In", data: "updated_at"}
                ]
 
            });
               });
      
-         
+//         
 
 

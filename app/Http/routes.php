@@ -50,6 +50,10 @@ Route::get('UpdateProfile', array(
     'as' => 'UpdateProfile',
     'uses' => 'LaravelTaskController@UpdateProfile'
 ));
+Route::get('viewProfile', array(
+    'as' => 'viewProfile',
+    'uses' => 'LaravelTaskController@viewProfile'
+));
 Route::get('ChangePassword', array(
     'as' => 'ChangePassword',
     'uses' => 'LaravelTaskController@ChangePassword'
@@ -95,6 +99,24 @@ Route::get('timezone', array(
     'as' => 'timezone',
     'uses' => 'LaravelTaskController@timezone'
 ));
+
+Route::get('/edit/{data}', array(
+   'as' => 'edit',
+   'uses' => 'LaravelTaskController@edit'
+));
+Route::get('/delete/{data}', array(
+   'as' => 'delete',
+   'uses' => 'LaravelTaskController@delete'
+));
+Route::get('/view/{data}', array(
+   'as' => 'view',
+   'uses' => 'LaravelTaskController@view'
+));
+
+
+
+
+
 Route::get('excelReg', array(
     'as' => 'excelReg',
     'uses' => 'LaravelTaskController@excelReg'
@@ -160,3 +182,11 @@ Route::get('LinkedIn', array(
 Route::get('linkedIn/callback', array(
     'as' => 'linkedIn/callback',
     'uses' => 'SocialiteController@LinkedInCallback'));
+
+
+
+//---------------Eloquent Relaionship------------------//
+
+Route::get('relation', array(
+    'as' => 'relation',
+    'uses' => 'EloquentController@Continent'));

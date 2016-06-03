@@ -1,12 +1,14 @@
  @extends('layouts.app')
 @section('content')  
   <!-- /.login-logo -->
+  <div>
   @if ( session()->has('password') )
     <div class="alert alert-info">{{ session()->get('password') }}</div>
 @endif
-  <div class="login-box-body">
-    <p class="login-box-msg">Change password</p>
-
+</div>
+  
+  
+  <h2>Change Password</h2>
     <form action="{{URL::route('password')}}" method="post">
            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
      
@@ -21,7 +23,7 @@
         <div class="col-xs-4">
           <button type="submit" name="change" id="change" class="btn btn-primary btn-block btn-flat">Change</button>
         </div>
-        <!-- /.col -->
+       
       </div>
     </form>
 @endsection

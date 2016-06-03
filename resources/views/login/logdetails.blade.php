@@ -48,9 +48,10 @@
                                 
                             </div>
         
-       
-        <script>
-      
-        </script>
   
 @stop
+@section('script')
+       <script type="text/javascript" src="{{asset('/js/logs.js')}}"></script>
+        
+      
+@endsection

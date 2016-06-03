@@ -36,6 +36,7 @@ use DateTimeZone;
 use App\TimeZone;
 use Excel;
 use PDF;
+
 class LaravelTaskController extends BaseController {
 
     use AuthorizesRequests,
@@ -45,13 +46,13 @@ class LaravelTaskController extends BaseController {
 
     public function adminlte() {
         session()->regenerate();
-      
+
         return view('layouts.index');
     }
 
     public function LteRegister() {
         session()->regenerate();
-       
+
         return view('registration.register');
     }
 
@@ -101,7 +102,7 @@ class LaravelTaskController extends BaseController {
         $Email = Input::get('Email');
         $object = new LaravelTaskController();
         $message = $object->generatePassword($Full_name, $City, $state);
-    
+
 
         $validator = Validator::make(Input::all(), array(
                     'Email' => 'required|max:50|email',
@@ -150,130 +151,122 @@ class LaravelTaskController extends BaseController {
         session(['Id' => $dbpwd['Id']]);
 
         if ($hashpassword == $dbpwd['Password']) {
-           $object=new LaravelTaskController();
-           $logs=$object->LogDetails($request);
+            $object = new LaravelTaskController();
+            $logs = $object->LogDetails($request);
 
             return view('login.logdetails', ['logs' => $logs]);
-
-      
         } else {
             $error = "invalid credentials";
             return view('layouts.login', ['error' => $error]);
         }
     }
-    public function LogDetails($request){
+
+    public function LogDetails($request) {
         session()->regenerate();
-    Session::get('Email');
-         $ipAddress = $_SERVER['REMOTE_ADDR'];
-            if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
-                $ipAddress = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
-            }
+        Session::get('Email');
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
+            $ipAddress = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+        }
 
-            $user['useragent'] = $request->server('HTTP_USER_AGENT');
-            $input['ip'] = $request->ip();
+        $user['useragent'] = $request->server('HTTP_USER_AGENT');
+        $input['ip'] = $request->ip();
+
+        $u_agent = $_SERVER['HTTP_USER_AGENT'];
+        $bname = 'Unknown';
+        $platform = 'Unknown';
+        $version = "";
+
+        if (preg_match('/linux/i', $u_agent)) {
+            $platform = 'linux';
+        } elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
+            $platform = 'mac';
+        } elseif (preg_match('/windows|win32/i', $u_agent)) {
+            $platform = 'windows';
+        }
+
+        if (preg_match('/MSIE/i', $u_agent) && !preg_match('/Opera/i', $u_agent)) {
+            $bname = 'Internet Explorer';
+            $ub = "MSIE";
+        } elseif (preg_match('/Firefox/i', $u_agent)) {
+            $bname = 'Mozilla Firefox';
+            $ub = "Firefox";
+        } elseif (preg_match('/Chrome/i', $u_agent)) {
+            $bname = 'Google Chrome';
+            $ub = "Chrome";
+        } elseif (preg_match('/Safari/i', $u_agent)) {
+            $bname = 'Apple Safari';
+            $ub = "Safari";
+        } elseif (preg_match('/Opera/i', $u_agent)) {
+            $bname = 'Opera';
+            $ub = "Opera";
+        } elseif (preg_match('/Netscape/i', $u_agent)) {
+            $bname = 'Netscape';
+            $ub = "Netscape";
+        }
+
+        $known = array('Version', $ub, 'other');
+        $pattern = '#(?<browser>' . join('|', $known) .
+                ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+        if (!preg_match_all($pattern, $u_agent, $matches)) {
             
-            $u_agent = $_SERVER['HTTP_USER_AGENT'];
-            $bname = 'Unknown';
-            $platform = 'Unknown';
-            $version = "";
-         
-            if (preg_match('/linux/i', $u_agent)) {
-                $platform = 'linux';
-            } elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
-                $platform = 'mac';
-            } elseif (preg_match('/windows|win32/i', $u_agent)) {
-                $platform = 'windows';
-            }
+        }
 
-            if (preg_match('/MSIE/i', $u_agent) && !preg_match('/Opera/i', $u_agent)) {
-                $bname = 'Internet Explorer';
-                $ub = "MSIE";
-            } elseif (preg_match('/Firefox/i', $u_agent)) {
-                $bname = 'Mozilla Firefox';
-                $ub = "Firefox";
-            } elseif (preg_match('/Chrome/i', $u_agent)) {
-                $bname = 'Google Chrome';
-                $ub = "Chrome";
-            } elseif (preg_match('/Safari/i', $u_agent)) {
-                $bname = 'Apple Safari';
-                $ub = "Safari";
-            } elseif (preg_match('/Opera/i', $u_agent)) {
-                $bname = 'Opera';
-                $ub = "Opera";
-            } elseif (preg_match('/Netscape/i', $u_agent)) {
-                $bname = 'Netscape';
-                $ub = "Netscape";
-            }
+        $i = count($matches['browser']);
+        if ($i != 1) {
 
-            $known = array('Version', $ub, 'other');
-            $pattern = '#(?<browser>' . join('|', $known) .
-                    ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
-            if (!preg_match_all($pattern, $u_agent, $matches)) {
-              
-            }
-
-            $i = count($matches['browser']);
-            if ($i != 1) {
-                
-                if (strripos($u_agent, "Version") < strripos($u_agent, $ub)) {
-                    $version = $matches['version'][0];
-                } else {
-                    $version = $matches['version'][1];
-                }
-            } else {
+            if (strripos($u_agent, "Version") < strripos($u_agent, $ub)) {
                 $version = $matches['version'][0];
+            } else {
+                $version = $matches['version'][1];
             }
+        } else {
+            $version = $matches['version'][0];
+        }
 
-            if ($version == null || $version == "") {
-                $version = "?";
-            }
+        if ($version == null || $version == "") {
+            $version = "?";
+        }
 
-            $u = array(
-                'userAgent' => $u_agent,
-                'name' => $bname,
-                'version' => $version,
-                'platform' => $platform,
-                'pattern' => $pattern
-            );
-            $yourbrowser = ['userAgent' => $u_agent, 'name' => $bname, 'version' => $version, 'platform' => $platform, 'pattern' => $pattern];
-            $jsonDetails = json_encode($yourbrowser);
+        $u = array(
+            'userAgent' => $u_agent,
+            'name' => $bname,
+            'version' => $version,
+            'platform' => $platform,
+            'pattern' => $pattern
+        );
+        $yourbrowser = ['userAgent' => $u_agent, 'name' => $bname, 'version' => $version, 'platform' => $platform, 'pattern' => $pattern];
+        $jsonDetails = json_encode($yourbrowser);
 
-            Logs::create(['UserAgent' => $jsonDetails,
-                'IpAddress' => $input['ip'],
-                'BrowserName' => $yourbrowser['name'],
-                'Version' => $yourbrowser['version'],
-                'Platform' => $yourbrowser['platform'],
-                'Email' => Session::get('Email'),
-            ]);
-            $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform', 'updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
-          return $browserDetails;
-
-        
+        Logs::create(['UserAgent' => $jsonDetails,
+            'IpAddress' => $input['ip'],
+            'BrowserName' => $yourbrowser['name'],
+            'Version' => $yourbrowser['version'],
+            'Platform' => $yourbrowser['platform'],
+            'Email' => Session::get('Email'),
+        ]);
+        $browserDetails = Logs::select('UserAgent', 'IpAddress', 'BrowserName', 'Version', 'Platform', 'updated_at')->where('Email', Session::get('Email'))->orderBy('updated_at', 'desc')->take(5)->get();
+        return $browserDetails;
     }
+
     public function Dashboard(Request $request) {
-         $object=new LaravelTaskController();
-           $logs=$object->LogDetails($request);
+        $object = new LaravelTaskController();
+        $logs = $object->LogDetails($request);
 
-            return view('login.logdetails', ['logs' => $logs]);
-
-        
+        return view('login.logdetails', ['logs' => $logs]);
     }
 
     public function UpdateProfile() {
         session()->regenerate();
         $value = null;
         $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile', 'CreditCard')->where('Email', Session::get('Email'))->first();
-//        $value = $browserDetails['CreditCard'];
-//
-//        $card = Crypt::decrypt($value);
-//       // echo $card;
 
         return view('login.update', ['info' => $browserDetails]);
     }
 
     public function onupdate() {
         session()->regenerate();
-        //  echo Session::get('Id');
+    
         $Full_name = Input::get('Full_name');
         $Address = Input::get('Address');
         $City = Input::get('City');
@@ -283,7 +276,7 @@ class LaravelTaskController extends BaseController {
         $card = Input::get('credit');
         $card = Crypt::encrypt($card);
 
-        $update = AddUser::where('Id', Session::get('Id'))->update([
+        $update = AddUser::where('Email', Session::get('Email'))->update([
             'Full_name' => $Full_name,
             'Address' => $Address,
             'City' => $City,
@@ -298,6 +291,22 @@ class LaravelTaskController extends BaseController {
         } else {
             return Redirect::route('UpdateProfile')
                             ->with('update', 'Problem in updating');
+        }
+    }
+    public function viewProfile() {
+        session()->regenerate();
+        $value = AddUser::select('CreditCard')->where('Email', Session::get('Email'))->get();
+        $value = json_decode(json_encode($value));
+        foreach ($value as $i) {
+            global $result;
+            $result = $i->CreditCard;
+            $result = Crypt::decrypt($result);
+        }
+
+        $getdata = AddUser::select('Full_name', 'Address', 'City', 'State', 'Mobile', 'Email')->where('Email', Session::get('Email'))->get();
+        $getdata = json_decode(json_encode($getdata), true);
+        foreach ($getdata as $data) {
+            return view('layouts.ViewProfile', ['temp' => $data, 'results' => $result]);
         }
     }
 
@@ -481,11 +490,11 @@ class LaravelTaskController extends BaseController {
                 $now = new DateTime();
 
                 foreach (DateTimeZone::listIdentifiers() as $timezone) {
-                   $time= $now->setTimezone(new DateTimeZone($timezone));
-                   $time=  json_decode(json_encode($time),true);
-                // echo $time['date'];
+                    $time = $now->setTimezone(new DateTimeZone($timezone));
+                    $time = json_decode(json_encode($time), true);
+                    // echo $time['date'];
                     $offsets[] = $offset = $now->getOffset();
-                    TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset),'Time'=>$time['date']]);
+                    TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset), 'Time' => $time['date']]);
                     $timezones[$timezone] = '(' . format_GMT_offset($offset) . ') ' . format_timezone_name($timezone);
                 }
             }
@@ -506,110 +515,99 @@ class LaravelTaskController extends BaseController {
             return $name;
         }
 
-
         $timezone = timezone_list();
 
-        $data = TimeZone::select(['Id', 'Name', 'Offset','Time'])->get();
+        $data = TimeZone::select(['Id', 'Name', 'Offset', 'Time'])->get();
 
         return view('layouts.TimeZone', ['data' => $data]);
     }
+
     public function excelReg() {
-       $users = AddUser::select('*')->get();
-Excel::create('Register', function($excel) use($users) {
-    $excel->sheet('Register', function($sheet) use($users) {
-        $sheet->fromArray($users);
-    });
-})->export('xls');
-
-        
+        $users = AddUser::select('*')->get();
+        Excel::create('Register', function($excel) use($users) {
+            $excel->sheet('Register', function($sheet) use($users) {
+                $sheet->fromArray($users);
+            });
+        })->export('xls');
     }
+
     public function excelLogs() {
-         $users = Logs::select('*')->get();
-Excel::create('Logs', function($excel) use($users) {
-    $excel->sheet('Logs', function($sheet) use($users) {
-        $sheet->fromArray($users);
-    });
-})->export('xls');
-
-
-        
+        $users = Logs::select('*')->get();
+        Excel::create('Logs', function($excel) use($users) {
+            $excel->sheet('Logs', function($sheet) use($users) {
+                $sheet->fromArray($users);
+            });
+        })->export('xls');
     }
+
     public function excelFile() {
-         $users = Uploads::select('*')->get();
-Excel::create('FileUpload', function($excel) use($users) {
-    $excel->sheet('FileUpload', function($sheet) use($users) {
-        $sheet->fromArray($users);
-        
-    });
-})->export('xls');
-
-        
+        $users = Uploads::select('*')->get();
+        Excel::create('FileUpload', function($excel) use($users) {
+            $excel->sheet('FileUpload', function($sheet) use($users) {
+                $sheet->fromArray($users);
+            });
+        })->export('xls');
     }
+
     public function excelTimeZone() {
-         $users = TimeZone::select('*')->get();
-Excel::create('TimeZone', function($excel) use($users) {
-    $excel->sheet('TimeZone', function($sheet) use($users) {
-        $sheet->fromArray($users);
-    });
-})->export('xls');
-
-        
+        $users = TimeZone::select('*')->get();
+        Excel::create('TimeZone', function($excel) use($users) {
+            $excel->sheet('TimeZone', function($sheet) use($users) {
+                $sheet->fromArray($users);
+            });
+        })->export('xls');
     }
- public function PDFReg() {
-       $users = AddUser::select('*')->get();
-Excel::create('Register', function($excel) use($users) {
-    $excel->sheet('Register', function($sheet) use($users) {
-        $sheet->fromArray($users);
-        $sheet->setPaper('4A0');
-        $sheet->setOrientation('landscape');
-    });
-})->export('pdf');
 
-        
+    public function PDFReg() {
+        $users = AddUser::select('*')->get();
+        Excel::create('Register', function($excel) use($users) {
+            $excel->sheet('Register', function($sheet) use($users) {
+                $sheet->fromArray($users);
+                $sheet->setPaper('4A0');
+                $sheet->setOrientation('landscape');
+            });
+        })->export('pdf');
     }
+
     public function PDFLogs() {
-         $users = Logs::select('*')->get();
-	Excel::create('Logs', function($excel) use ($users) {
-		$excel->sheet('mySheet', function($sheet) use ($users)
-	    {
-			$sheet->fromArray($users);
-	    });
-	   })->setPaper('a2')->setOrientation('landscape')->setWarnings(false)->download('pdf');
- 
-        
+        $users = Logs::select('*')->get();
+        Excel::create('Logs', function($excel) use ($users) {
+            $excel->sheet('mySheet', function($sheet) use ($users) {
+                $sheet->fromArray($users);
+            });
+        })->setPaper('a2')->setOrientation('landscape')->setWarnings(false)->download('pdf');
     }
+
     public function PDFFile() {
-         $users = Uploads::select('*')->get();
-Excel::create('FileUpload', function($excel) use($users) {
-    $excel->sheet('FileUpload', function($sheet) use($users) {
-        $sheet->fromArray($users);
-    });
-})->export('pdf');
-
-        
+        $users = Uploads::select('*')->get();
+        Excel::create('FileUpload', function($excel) use($users) {
+            $excel->sheet('FileUpload', function($sheet) use($users) {
+                $sheet->fromArray($users);
+            });
+        })->export('pdf');
     }
+
     public function PDFTimeZone() {
-         $users = TimeZone::select('*')->get();
-Excel::create('TimeZone', function($excel) use($users) {
-    $excel->sheet('TimeZone', function($sheet) use($users) {
-        $sheet->fromArray($users);
-    });
-})->export('pdf');
-
-        
+        $users = TimeZone::select('*')->get();
+        Excel::create('TimeZone', function($excel) use($users) {
+            $excel->sheet('TimeZone', function($sheet) use($users) {
+                $sheet->fromArray($users);
+            });
+        })->export('pdf');
     }
 
+    public function view($data) {
+        $view = TimeZone::select('*')->where('Id', $data)->get();
+        return view('layouts.DbView', ['view' => $view]);
+    }
 
+    public function edit($data) {
+        $view = TimeZone::select('*')->where('Id', $data)->get();
+        return view('layouts.DbView', ['view' => $view]);
+    }
 
-public function view($data) {
-    $view=TimeZone::select('*')->where('Id',$data)->get();
-    return view('layouts.DbView',['view'=>$view]);
-}
-public function edit($data) {
-    echo $data;
-}
-public function delete($data) {
-    echo $data;
-}
-}
+    public function delete($data) {
+        echo $data;
+    }
 
+}
