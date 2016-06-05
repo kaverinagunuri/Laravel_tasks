@@ -251,7 +251,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            
+
 
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -395,7 +395,7 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="{{URL::route('FileUpload')}}"><i class="glyphicon glyphicon-upload"></i> File Upload</a></li>
-                                <li><a href="{{URL::route('json')}}"><i class="glyphicon glyphicon-eye-open"></i> View Files</a></li>
+                                <li><a href="{{URL::route('FileDataTables')}}"><i class="glyphicon glyphicon-eye-open"></i> View Files</a></li>
                             </ul>
                         </li>
                         <li class="treeview ">
@@ -429,7 +429,7 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="{{URL::route('timezone')}}"><i class="fa fa-circle-o"></i> Time Zone</a></li>
+                                <li><a href="{{URL::route('timezonetables')}}"><i class="fa fa-circle-o"></i> Time Zone</a></li>
                             </ul>
                         </li>
 
@@ -441,7 +441,7 @@
 
             <div class="control-sidebar-bg"></div>
         </div>
-     
+
         <script src="{{asset('/plugins/jQuery/jQuery-2.2.0.min.js')}}"></script>
         <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
@@ -450,7 +450,7 @@
         <script type="text/javascript" src="{{asset('/js/map.js')}}"></script>
         <script type="text/javascript" src="{{asset('/js/Validations.js')}}"></script>
         <script src="{{asset('js/progress.js')}}"></script>
-       
+
         <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
         <script src = "/bootstrap/js/bootstrap.min.js" ></script>
         <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>

@@ -1,14 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Http\Controllers;
-
-//namespace App\Http\Controllers\Redirect;
 
 use File;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -44,36 +36,25 @@ class LaravelTaskController extends BaseController {
         DispatchesJobs,
         ValidatesRequests;
 
-    public function adminlte() {
-        session()->regenerate();
-
-        return view('layouts.index');
-    }
-
-    public function LteRegister() {
+//-----------------------Registration Form-----------------------------//
+    public function Register() {
         session()->regenerate();
 
         return view('registration.register');
     }
 
-    public function LteLogin() {
+    public function RegForm() {
         session()->regenerate();
 
-        return view('layouts.login');
-    }
-
-    public function form2() {
-        session()->regenerate();
-
-        $Full_name = Input::get('Full_name');
+        $FullName = Input::get('FullName');
         $Address = Input::get('Address');
         $City = Input::get('City');
         $state = Input::get('state');
 
 
-        session(['Full_name' => $Full_name, 'Address' => $Address, 'City' => $City, 'state' => $state]);
+        session(['FullName' => $FullName, 'Address' => $Address, 'City' => $City, 'state' => $state]);
 
-        return view('registration.form2');
+        return view('registration.RegForm-2');
     }
 
     public function submitform() {
@@ -82,7 +63,7 @@ class LaravelTaskController extends BaseController {
         $Email = Input::get('Email');
         $Mobile = Input::get('Mobile');
         session(['Email' => $Email, 'Mobile' => $Mobile]);
-        $data['Full_name'] = Session::get('Full_name');
+        $data['FullName'] = Session::get('FullName');
         $data['Address'] = Session::get('Address');
         $data['City'] = Session::get('City');
         $data['state'] = Session::get('state');
@@ -95,21 +76,21 @@ class LaravelTaskController extends BaseController {
 
     public function Onconfirm() {
         $info = null;
-        $Full_name = Input::get('Full_name');
+        $FullName = Input::get('FullName');
         $Address = Input::get('Address');
         $City = Input::get('City');
         $state = Input::get('state');
         $Email = Input::get('Email');
         $object = new LaravelTaskController();
-        $message = $object->generatePassword($Full_name, $City, $state);
+        $message = $object->generatePassword($FullName, $City, $state);
 
 
         $validator = Validator::make(Input::all(), array(
                     'Email' => 'required|max:50|email',
-                    'Full_name' => 'required|max:20|min:3',
+                    'FullName' => 'required|max:50|min:3',
                     'City' => 'required|min:6',
                     'Mobile' => 'required|numeric|digits:10',
-                    'Address' => 'required'
+                    'Address' => 'required',
                         )
         );
         if ($validator->fails()) {
@@ -119,7 +100,7 @@ class LaravelTaskController extends BaseController {
         } else {
 
 
-            $Full_name = Input::get('Full_name');
+            $FullName = Input::get('FullName');
             $Address = Input::get('Address');
             $City = Input::get('City');
             $state = Input::get('state');
@@ -127,7 +108,7 @@ class LaravelTaskController extends BaseController {
             $Mobile = Input::get('Mobile');
             $message = md5($message);
 
-            $user = AddUser::create(['Full_name' => $Full_name, 'Address' => $Address, 'City' => $City, 'State' => $state, 'Email' => $Email, 'Mobile' => $Mobile, 'Password' => $message]);
+            $user = AddUser::create(['FullName' => $FullName, 'Address' => $Address, 'City' => $City, 'State' => $state, 'Email' => $Email, 'Mobile' => $Mobile, 'Password' => $message]);
             if ($user) {
                 $info.="successfully registered";
             } else {
@@ -138,6 +119,90 @@ class LaravelTaskController extends BaseController {
         return view('registration.register', ['message' => $info]);
     }
 
+    //-----------------------OTP Generate Function-----------------------------//
+    function generatePassword($FullName, $City, $state) {
+        $info = null;
+        $message = null;
+        $ldate = new DateTime;
+        $hours = $ldate->format('H:i');
+
+        $hours = explode(":", $hours);
+        $hours = implode("", $hours);
+
+        $spcl_char = '!@#$%&*()_=+]}[{;:,<.>?|';
+        $spcl_char = str_shuffle($spcl_char);
+        $spcl_char = substr($spcl_char, 0, 5);
+
+
+        $FullName = strtolower($FullName);
+        $City = strtolower($City);
+        $state = strtolower($state);
+        $string = $City . $state;
+        $com = $string . $FullName;
+        $com = str_split($com);
+        $alphabets = str_split("abcdefghijklmnopqrstvuwxyz");
+        $string = str_split($string);
+        $name = str_split($FullName);
+        $arr = null;
+        $ex = null;
+        $count = 0;
+        for ($x = 0; $x < count($string); $x++) {
+            $count = 0;
+            for ($y = 0; $y < count($name); $y++) {
+                if ($string[$x] == $name[$y]) {
+                    $count = 1;
+                }
+            }
+            if ($count == 0) {
+                $arr.= $string[$x];
+            }
+        }
+
+        if (strlen($arr) < 11) {
+            $length = strlen($arr);
+            for ($x = 0; $x < count($alphabets); $x++) {
+                $count = 0;
+                for ($y = 0; $y < count($com); $y++) {
+                    if ($alphabets[$x] == $com[$y]) {
+                        $count = 1;
+                    }
+                }
+                if ($count == 0) {
+                    $ex.= $alphabets[$x];
+                }
+                if (strlen($ex) + $length == 11) {
+                    $x = count($alphabets);
+                }
+            }
+        }
+
+        $string = $arr . $ex;
+
+        $upper = strtoupper(substr($string, 0, 2));
+        $rand = str_shuffle($spcl_char . $hours . $upper);
+        $str = str_shuffle(substr($string, 2, 9));
+
+
+        $message = substr($str, 0, 4) . $rand . substr($str, 4, 5);
+        $Email = Input::get('Email');
+
+        $val = Mail::raw($message, function ($message)use($Email) {
+
+                    $message->from('kaveri.nagunuri@karmanya.co.in', 'kaveri');
+                    $message->to($Email)->subject("Generated Password");
+                });
+        return $message;
+    }
+
+    //-----------------------Login-----------------------------//
+
+    public function Login() {
+        session()->regenerate();
+
+        return view('layouts.login');
+    }
+
+    //----------------------Dash Board-----------------------------//
     public function loggedin(Request $request) {
         session()->regenerate();
 
@@ -160,6 +225,15 @@ class LaravelTaskController extends BaseController {
             return view('layouts.login', ['error' => $error]);
         }
     }
+
+    public function Dashboard(Request $request) {
+        $object = new LaravelTaskController();
+        $logs = $object->LogDetails($request);
+
+        return view('login.logdetails', ['logs' => $logs]);
+    }
+
+    //----------------------Log Details-----------------------------//
 
     public function LogDetails($request) {
         session()->regenerate();
@@ -249,25 +323,20 @@ class LaravelTaskController extends BaseController {
         return $browserDetails;
     }
 
-    public function Dashboard(Request $request) {
-        $object = new LaravelTaskController();
-        $logs = $object->LogDetails($request);
-
-        return view('login.logdetails', ['logs' => $logs]);
-    }
+    //----------------------Update Panel-----------------------------//
 
     public function UpdateProfile() {
         session()->regenerate();
         $value = null;
-        $browserDetails = AddUser::select('Full_name', 'Address', 'City', 'State', 'Email', 'Mobile', 'CreditCard')->where('Email', Session::get('Email'))->first();
+        $browserDetails = AddUser::select('FullName', 'Address', 'City', 'State', 'Email', 'Mobile', 'CreditCard')->where('Email', Session::get('Email'))->first();
 
         return view('login.update', ['info' => $browserDetails]);
     }
 
     public function onupdate() {
         session()->regenerate();
-    
-        $Full_name = Input::get('Full_name');
+
+        $FullName = Input::get('Full_name');
         $Address = Input::get('Address');
         $City = Input::get('City');
         $state = Input::get('state');
@@ -277,7 +346,7 @@ class LaravelTaskController extends BaseController {
         $card = Crypt::encrypt($card);
 
         $update = AddUser::where('Email', Session::get('Email'))->update([
-            'Full_name' => $Full_name,
+            'FullName' => $FullName,
             'Address' => $Address,
             'City' => $City,
             'State' => $state,
@@ -293,6 +362,11 @@ class LaravelTaskController extends BaseController {
                             ->with('update', 'Problem in updating');
         }
     }
+
+    //----------------------View Profile Panel-----------------------------//
+
+
+
     public function viewProfile() {
         session()->regenerate();
         $value = AddUser::select('CreditCard')->where('Email', Session::get('Email'))->get();
@@ -303,25 +377,29 @@ class LaravelTaskController extends BaseController {
             $result = Crypt::decrypt($result);
         }
 
-        $getdata = AddUser::select('Full_name', 'Address', 'City', 'State', 'Mobile', 'Email')->where('Email', Session::get('Email'))->get();
+        $getdata = AddUser::select('FullName', 'Address', 'City', 'State', 'Mobile', 'Email')->where('Email', Session::get('Email'))->get();
         $getdata = json_decode(json_encode($getdata), true);
         foreach ($getdata as $data) {
             return view('layouts.ViewProfile', ['temp' => $data, 'results' => $result]);
         }
     }
 
+    //----------------------Change Password-----------------------------//
+
+
     public function ChangePassword() {
         session()->regenerate();
-        $password = AddUser::select('Password')->where('Id', Session::get('Id'))->first();
-        $password = json_decode(json_encode($password), TRUE);
-        return view('login.changepassword', ['password' => $password]);
+        $Email = AddUser::select('Email')->where('Email', Session::get('Email'))->first();
+        $Email = json_decode(json_encode($Email), TRUE);
+
+        return view('login.changepassword', ['Email' => $Email]);
     }
 
     public function password() {
         session()->regenerate();
         $password = Input::get('Password');
         $password = md5($password);
-        $update = AddUser::where('Id', Session::get('Id'))->update([
+        $update = AddUser::where('Email', Session::get('Email'))->update([
             'Password' => $password,
         ]);
         if ($update) {
@@ -333,6 +411,8 @@ class LaravelTaskController extends BaseController {
         }
     }
 
+    //----------------------Log Out Session-----------------------------//
+
     public function logout() {
         session()->regenerate();
         session(['Id' => null, 'Email' => null]);
@@ -340,12 +420,10 @@ class LaravelTaskController extends BaseController {
                         ->with('logout', 'sucessfully logged out');
     }
 
+    //----------------------File Upload-----------------------------//
+
     public function FileUpload() {
         return view('FileUpload.fileupload');
-    }
-
-    public function maps() {
-        return view('layouts.location');
     }
 
     public function upload() {
@@ -363,17 +441,20 @@ class LaravelTaskController extends BaseController {
         Uploads::create(['File' => $file_name, 'Type' => $file_type, 'Size' => $file_size, 'Email' => Session::get('Email')]);
     }
 
-    public function json() {
+    //---------------------  File Uploads In DataTables  -----------------------------//
+
+    public function FileDataTables() {
         $output_array = [];
         session()->regenerate();
         $get_file = Uploads::select('Id', 'File', 'Type', 'Size')
                         ->where('Email', Session::get('Email'))->get();
-        // $get_file = json_decode(json_encode($get_file), TRUE);
 
         $data = $get_file;
-        //$get_file= json_encode($get_file);
+
         return view('FileUpload.uploadfiles', ['data' => $data]);
     }
+
+    //----------------------Forgot Password-----------------------------//
 
     public function Forgot() {
         return view('login.Forgot');
@@ -384,9 +465,9 @@ class LaravelTaskController extends BaseController {
 
         $Email = Input::get('Email');
         session(['Email' => $Email]);
-        $dbpwd = AddUser::select('Id', 'Full_name', 'Address', 'City', 'State')->where('Email', $Email)->first();
+        $dbpwd = AddUser::select('Id', 'FullName', 'Address', 'City', 'State')->where('Email', $Email)->first();
         if ($dbpwd) {
-            $name = $dbpwd['Full_name'];
+            $name = $dbpwd['FullName'];
             $Address = $dbpwd['Address'];
             $City = $dbpwd['City'];
             $State = $dbpwd['State'];
@@ -405,81 +486,10 @@ class LaravelTaskController extends BaseController {
         }
     }
 
-    function generatePassword($Full_name, $City, $state) {
-        $info = null;
-        $message = null;
-        $ldate = new DateTime;
-        $hours = $ldate->format('H:i');
-
-        $hours = explode(":", $hours);
-        $hours = implode("", $hours);
-
-        $spcl_char = '!@#$%&*()_=+]}[{;:,<.>?|';
-        $spcl_char = str_shuffle($spcl_char);
-        $spcl_char = substr($spcl_char, 0, 5);
+    //----------------------TimeZone-----------------------------//
 
 
-        $Full_name = strtolower($Full_name);
-        $City = strtolower($City);
-        $state = strtolower($state);
-        $string = $City . $state;
-        $com = $string . $Full_name;
-        $com = str_split($com);
-        $alphabets = str_split("abcdefghijklmnopqrstvuwxyz");
-        $string = str_split($string);
-        $name = str_split($Full_name);
-        $arr = null;
-        $ex = null;
-        $count = 0;
-        for ($x = 0; $x < count($string); $x++) {
-            $count = 0;
-            for ($y = 0; $y < count($name); $y++) {
-                if ($string[$x] == $name[$y]) {
-                    $count = 1;
-                }
-            }
-            if ($count == 0) {
-                $arr.= $string[$x];
-            }
-        }
-
-        if (strlen($arr) < 11) {
-            $length = strlen($arr);
-            for ($x = 0; $x < count($alphabets); $x++) {
-                $count = 0;
-                for ($y = 0; $y < count($com); $y++) {
-                    if ($alphabets[$x] == $com[$y]) {
-                        $count = 1;
-                    }
-                }
-                if ($count == 0) {
-                    $ex.= $alphabets[$x];
-                }
-                if (strlen($ex) + $length == 11) {
-                    $x = count($alphabets);
-                }
-            }
-        }
-
-        $string = $arr . $ex;
-
-        $upper = strtoupper(substr($string, 0, 2));
-        $rand = str_shuffle($spcl_char . $hours . $upper);
-        $str = str_shuffle(substr($string, 2, 9));
-
-
-        $message = substr($str, 0, 4) . $rand . substr($str, 4, 5);
-        $Email = Input::get('Email');
-
-        $val = Mail::raw($message, function ($message)use($Email) {
-
-                    $message->from('kaveri.nagunuri@karmanya.co.in', 'kaveri');
-                    $message->to($Email)->subject("Generated Password");
-                });
-        return $message;
-    }
-
-    public function timezone() {
+    public function timezonetables() {
 
         function timezone_list() {
             static $timezones = null;
@@ -488,14 +498,18 @@ class LaravelTaskController extends BaseController {
                 $timezones = [];
                 $offsets = [];
                 $now = new DateTime();
+                $Id = TimeZone::select('Id')->count();
+                if ($Id == 0) {
+                    foreach (DateTimeZone::listIdentifiers() as $timezone) {
+                        $time = $now->setTimezone(new DateTimeZone($timezone));
+                        $time = json_decode(json_encode($time), true);
 
-                foreach (DateTimeZone::listIdentifiers() as $timezone) {
-                    $time = $now->setTimezone(new DateTimeZone($timezone));
-                    $time = json_decode(json_encode($time), true);
-                    // echo $time['date'];
-                    $offsets[] = $offset = $now->getOffset();
-                    TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset), 'Time' => $time['date']]);
-                    $timezones[$timezone] = '(' . format_GMT_offset($offset) . ') ' . format_timezone_name($timezone);
+                        $offsets[] = $offset = $now->getOffset();
+
+
+                        TimeZone::create(['Name' => format_timezone_name($timezone), 'Offset' => format_GMT_offset($offset), 'Time' => $time['date']]);
+                        $timezones[$timezone] = '(' . format_GMT_offset($offset) . ') ' . format_timezone_name($timezone);
+                    }
                 }
             }
 
@@ -517,10 +531,71 @@ class LaravelTaskController extends BaseController {
 
         $timezone = timezone_list();
 
-        $data = TimeZone::select(['Id', 'Name', 'Offset', 'Time'])->get();
 
-        return view('layouts.TimeZone', ['data' => $data]);
+
+        return view('TimeZone.TimeZone');
     }
+
+    //----------------------TimeZone Ajax Pagination-----------------------------//
+
+    public function timezone(Request $request) {
+        $lenght = $request->input('length');
+        ;
+        $start = $request->input('start');
+        $search = $request->input('search');
+        $order = $request->input('order');
+        $column = $request->input('columns');
+
+        $ajax = TimeZone::select('*')->limit($lenght)->offset($start)->get();
+        $ajax = json_encode($ajax);
+        $count = TimeZone::count();
+        echo "{\"recordsTotal\":" . $count . ",\"recordsFiltered\":" . $count . ", \"data\":" . $ajax . "}";
+    }
+
+    //----------------------TimeZone Operations-----------------------------//
+
+    public function view($data) {
+        $view = TimeZone::select('*')->where('Id', $data)->get();
+        return view('TimeZone.DbView', ['view' => $view]);
+    }
+
+    public function edit($data) {
+        $edit = TimeZone::select('*')->where('Id', $data)->get();
+
+        return view('TimeZone.DbEdit', ['edit' => $data]);
+    }
+
+    public function OnEditTable() {
+        $ID = Input::get('Id');
+        $Name = Input::get('Name');
+        $Offset = Input::get('Offset');
+        $Time = Input::get('Time');
+
+
+
+        $update = TimeZone::where('Id', $ID)->update(['Name' => $Name, 'Offset' => $Offset, 'Time' => $Time]);
+        if ($update) {
+            return Redirect::route('timezonetables')
+                            ->with('edit', 'Successfully Updated');
+        } else {
+            return Redirect::route('timezonetables')
+                            ->with('edit', 'Problem in Updation');
+        }
+    }
+
+    public function delete($data) {
+
+        $delete = TimeZone::select('*')->where('Id', $data)->delete();
+        if ($delete) {
+            return Redirect::route('timezonetables')
+                            ->with('delete', 'Successfully delete');
+        } else {
+            return Redirect::route('timezonetables')
+                            ->with('delete', 'Problem in deletion');
+        }
+    }
+
+    //----------------------Daatabase Tables to Excel Format-----------------------------//
 
     public function excelReg() {
         $users = AddUser::select('*')->get();
@@ -558,6 +633,8 @@ class LaravelTaskController extends BaseController {
         })->export('xls');
     }
 
+    //----------------------DataBase Tables to PDF Format-----------------------------//
+
     public function PDFReg() {
         $users = AddUser::select('*')->get();
         Excel::create('Register', function($excel) use($users) {
@@ -594,20 +671,6 @@ class LaravelTaskController extends BaseController {
                 $sheet->fromArray($users);
             });
         })->export('pdf');
-    }
-
-    public function view($data) {
-        $view = TimeZone::select('*')->where('Id', $data)->get();
-        return view('layouts.DbView', ['view' => $view]);
-    }
-
-    public function edit($data) {
-        $view = TimeZone::select('*')->where('Id', $data)->get();
-        return view('layouts.DbView', ['view' => $view]);
-    }
-
-    public function delete($data) {
-        echo $data;
     }
 
 }

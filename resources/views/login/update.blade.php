@@ -9,13 +9,13 @@
 @endif
 
 <div class="register-box-body">
-    <p class="login-box-msg">Update Profile</p>
+    <h2>Update Profile</h2>
 
     <form action="{{URL::route('onupdate')}}" method="post">
         <input type="hidden" name="_token" value="{{csrf_token()}}"/>
         @if(isset($info))
         <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Full name" id="Full_name" name="Full_name" value="{{$info['Full_name']}}"> 
+            <input type="text" class="form-control" placeholder="Full name" id="Full_name" name="Full_name" value="{{$info['FullName']}}"> 
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
             <span class="error" id="Fullname_error"></span>
 

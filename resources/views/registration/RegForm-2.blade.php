@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -29,48 +28,27 @@
             <div class="register-box-body">
                 <p class="login-box-msg">Register a new membership</p>
 
-                <form action="{{URL::route('Onconfirm')}}" method="post">
+                <form action="{{URL::route('submitform')}}" method="post">
                     <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-
                     <div class="form-group has-feedback">
-                        <label for="fullname">Full-Name</label>  <input type="hidden" name="FullName" value="{{$Userdata['FullName']}}"/> {{$Userdata['FullName']}}
-                    </div>
-                    <div class="form-group has-feedback">
-                        <label for="Address">Address</label>  <input type="hidden" name="Address" value="{{$Userdata['Address']}}"/> {{$Userdata['Address']}}
-                    </div>
-                    <div class="form-group has-feedback">
-                        <label for="City">City</label>  <input type="hidden" name="City" value="{{$Userdata['City']}}"/> {{$Userdata['City']}} 
+                        <input type="text" class="form-control" placeholder="Phone Number" id="Mobile" name="Mobile" size="10">
+                        <span class="glyphicon glyphicon-phone-alt form-control-feedback"></span>
+                        <span class="error" id="Mobile_error"></span>
                     </div>
                     <div class='form-group has-feedback'>
-                        <label for="state">state</label>  <input type="hidden" name="state" value="{{$Userdata['state']}}"/> {{$Userdata['state']}}
+                        <input type="email" class="form-control" placeholder="Email" id="Email" name="Email">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <span class="error" id="Email_error"></span>
                     </div>
-                    <div class="form-group has-feedback">
-                        <label for="Email">Email</label>  <input type="hidden" name="Email" value="{{$Userdata['Email']}}"/> {{$Userdata['Email']}}
-                    </div>
-                    <div class='form-group has-feedback'>
-                        <label for="Mobile">Mobile</label>  <input hidden type="tel" name="Mobile" value="{{$Userdata['Mobile']}}"/> {{$Userdata['Mobile']}}
-                    </div>
-
                     <div class="row">
-                        <!--        <div class="col-xs-8">
-                                 
-                                    <label>
-                                        <input type="checkbox" required=""> Do u want to continue
-                                    </label>
-                                 
-                                </div>-->
-                        <!-- /.col -->
                         <div class='col-xs-4'>
-                            <a href="{{URL::route('back')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
+                            <a href="{{URL::route('LteRegister')}}"><input type="button" class="btn btn-primary btn-block btn-flat" value="BACK"></a>
                         </div>
-                        <div class="col-sm-4">
-                            <button type="submit" id="confirm" class="btn btn-primary btn-block btn-flat">Confirm</button>
+                        <div class="col-xs-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat float" id="form2">NEXT</button>
                         </div>
-                        <!-- /.col -->
                     </div>
                 </form>
-
-
 
             </div>
             <!-- /.form-box -->

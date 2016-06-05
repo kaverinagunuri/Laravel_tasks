@@ -14,48 +14,48 @@
 <!-- Geolocation JS -->
 <script type="text/javascript" src="{{asset('js/location.js')}}">
 
-        
+
 </script>
 <link rel="stylesheet" href="{{asset('css/map.css')}}">
 <!-- Map Container Styling -->
 <style type="text/css">
 
-/* #Full Screen CSS (Desktop)
-================================================== */
-#mapContainer {
-    height: 500px;
-    width: 920px;
-    border:10px solid #eaeaea;
-    margin-top:20px;
-    margin-bottom:20px;
-}
+    /* #Full Screen CSS (Desktop)
+    ================================================== */
+    #mapContainer {
+        height: 500px;
+        width: 920px;
+        border:10px solid #eaeaea;
+        margin-top:20px;
+        margin-bottom:20px;
+    }
 
-/* #Tablet (Portrait)
-================================================== */
-@media only screen and (min-width: 768px) and (max-width: 959px) {
-	#mapContainer {
-	    height: 500px;
-	    width: 708px;
-	}
-}	
-	
-/*  #Mobile (Portrait)
-================================================== */
-@media only screen and (max-width: 767px) {
-	#mapContainer {
-	    height: 260px;
-	    width: 260px;
-	}
-}	
+    /* #Tablet (Portrait)
+    ================================================== */
+    @media only screen and (min-width: 768px) and (max-width: 959px) {
+        #mapContainer {
+            height: 500px;
+            width: 708px;
+        }
+    }	
 
-/* #Mobile (Landscape)
-================================================== */
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-	#mapContainer {
-	    height: 400px;
-	    width: 400px;
-	}
-}	
+    /*  #Mobile (Portrait)
+    ================================================== */
+    @media only screen and (max-width: 767px) {
+        #mapContainer {
+            height: 260px;
+            width: 260px;
+        }
+    }	
+
+    /* #Mobile (Landscape)
+    ================================================== */
+    @media only screen and (min-width: 480px) and (max-width: 767px) {
+        #mapContainer {
+            height: 400px;
+            width: 400px;
+        }
+    }	
 
 </style>
 
@@ -63,9 +63,9 @@
 
 <body>
 
-	<!-- Map Container -->
+    <!-- Map Container -->
     <div id="mapContainer"></div>
-    
+
 </body>
 
 </html>
