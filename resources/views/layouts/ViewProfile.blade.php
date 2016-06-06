@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-
+<section>
 <div class="register-box-body">
     <p class="login-box-msg">view profile</p>
     <form  method="post" action=''>
@@ -45,3 +45,4 @@
 
 
     @endsection   
+</section>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')  
-
+<section>
 @if(isset($message))
 <div class="alert alert-info">{{$message}}</div>
 @endif
@@ -89,3 +89,4 @@
 @endif
 <!-- /.form-box -->
 @endsection 
+</section>

@@ -349,56 +349,50 @@
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
                     </div>
-                    <!-- search form -->
-                    <form action="#" method="get" class="sidebar-form">
-                        <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="Search..."/>
-                            <span class="input-group-btn">
-                                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                    <!-- /.search form -->
-                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                   
                     <ul class="sidebar-menu">
                         <li class="header">MAIN NAVIGATION</li>
-
-                        <li class="treeview active ">
-                            <a href="#">
-                                <i class="glyphicon glyphicon-edit"></i>
-                                <span>Update Profile</span>
-                                <i class="fa fa-angle-left pull-right"></i>
+                         <li class="treeview active ">
+                            <a href="{{URL::route('Dashboard')}}">
+                                <i class="glyphicon glyphicon-dashboard"></i>
+                                <span>DashBoard</span>
+                                
                             </a>
-                            <ul class="treeview-menu">
-                                <li><a href="{{URL::route('UpdateProfile')}}"><i class="fa fa-circle-o"></i> Update Profile</a></li>
-                            </ul>
+                           
                         </li>
 
+                        <li class="treeview active ">
+                            <a href="{{URL::route('UpdateProfile')}}">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                <span>Update Profile</span>
+                              </a>
+                          
+                        </li>
+                        
                         <li class="treeview active" >
-                            <a href="#">
+                            <a href="{{URL::route('ChangePassword')}}">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 <span>Change Password</span>
-                                <i class="fa fa-angle-left pull-right"></i>
                             </a>
-                            <ul class="treeview-menu">
-                                <li><a href="{{URL::route('ChangePassword')}}"><i class="fa fa-circle-o"></i> Change Password</a></li>
-                            </ul>
+                           
                         </li>
                         <li class="treeview active">
                             <a href="{{URL::route('viewProfile')}}"><i class="glyphicon glyphicon-eye-open"></i> View Profile</a>
                         </li>
-                        <li class="treeview active">
-                            <a href="#">
-                                <i class="glyphicon glyphicon-file"></i>
-                                <span>File Uploads</span>
-                                <i class="fa fa-angle-left pull-right"></i>
+                       
+                        <li class="treeview active "><a href="{{URL::route('FileUpload')}}"><i class="glyphicon glyphicon-upload"></i> File Upload</a></li>
+                        <li class="treeview active "><a href="{{URL::route('FileDataTables')}}"><i class="glyphicon glyphicon-eye-open"></i> View Files</a></li>
+                           
+                   
+                         <li class="treeview active ">
+                            <a href="{{URL::route('timezonetables')}}">
+                                <i class="glyphicon glyphicon-time"></i>
+                                <span>Time Zone</span>
+                               
                             </a>
-                            <ul class="treeview-menu">
-                                <li><a href="{{URL::route('FileUpload')}}"><i class="glyphicon glyphicon-upload"></i> File Upload</a></li>
-                                <li><a href="{{URL::route('FileDataTables')}}"><i class="glyphicon glyphicon-eye-open"></i> View Files</a></li>
-                            </ul>
+                           
                         </li>
-                        <li class="treeview ">
+                        <li class="treeview active ">
                             <a href="#">
                                 <i class="glyphicon glyphicon-tags"></i> <span>Export to Excel</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -410,7 +404,7 @@
                                 <li><a href="{{URL::route('excelTimeZone')}}"><i class="fa fa-circle-o"></i> Export Time Zone to Excel</a></li>
                             </ul>
                         </li>
-                        <li class="treeview ">
+                        <li class="treeview active">
                             <a href="#">
                                 <i class="glyphicon glyphicon-tags"></i> <span>Export to PDF</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -422,16 +416,7 @@
                                 <li><a href="{{URL::route('PDFTimeZone')}}"><i class="fa fa-circle-o"></i> Export Time Zone to PDF</a></li>
                             </ul>
                         </li>
-                        <li class="treeview active ">
-                            <a href="#">
-                                <i class="glyphicon glyphicon-time"></i>
-                                <span>Time Zone</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="{{URL::route('timezonetables')}}"><i class="fa fa-circle-o"></i> Time Zone</a></li>
-                            </ul>
-                        </li>
+                       
 
                     </ul>
                 </section>
@@ -443,6 +428,7 @@
         </div>
 
         <script src="{{asset('/plugins/jQuery/jQuery-2.2.0.min.js')}}"></script>
+        
         <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>

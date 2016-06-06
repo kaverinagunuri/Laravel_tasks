@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('content')   
+@section('content') 
+<section>
 @if ( session()->has('delete') )
 <div class="alert alert-info">{{ session()->get('delete') }}</div>
 @endif
@@ -14,3 +15,4 @@
 @section('script')
 <script src="{{asset('js/TimeZone.js')}}"></script>
 @endsection
+</section>

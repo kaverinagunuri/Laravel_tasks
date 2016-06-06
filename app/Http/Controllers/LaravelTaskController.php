@@ -561,8 +561,8 @@ class LaravelTaskController extends BaseController {
 
     public function edit($data) {
         $edit = TimeZone::select('*')->where('Id', $data)->get();
-
-        return view('TimeZone.DbEdit', ['edit' => $data]);
+         $edit=  json_decode(json_encode($edit),true);
+        return view('TimeZone.DbEdit', ['edit' => $edit]);
     }
 
     public function OnEditTable() {

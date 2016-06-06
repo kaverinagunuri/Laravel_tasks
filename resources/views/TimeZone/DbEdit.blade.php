@@ -16,22 +16,24 @@
                 </tr>
             </thead>
             <tr>
-
+                @foreach($edit as $value)
                 <td>
-                    <input type="text" value="{{$edit}}" readonly name="Id"/>   
+                    <input type="text" value="{{$value['Id']}}" readonly name="Id"/>   
                 </td>
                 <td>
-                    <input type="text"  name="Name"/> 
+                    <input type="text"  name="Name" value="{{$value['Name']}}"/> 
                 </td>
                 <td>
-                    <input type="text"   name="Offset"/>
+                    <input type="text"   name="Offset" value="{{$value['Offset']}}"/>
                 </td>
                 <td>
-                    <input type="time"  name="Time" />
+                    <input type="time"  name="Time" value="{{$value['Time']}}" />
                 </td>
                 <th>
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Save</button>
-                </th></tr>
+                </th>
+                @endforeach
+            </tr>
         </table>
 
     </form>  
