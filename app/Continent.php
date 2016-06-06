@@ -14,10 +14,15 @@ class Continent extends Model
         return $this->hasMany('App\Country','ContinentId');
     }
      public function State() {
-        return $this->hasMany('App\State');
+        return $this->hasManyThrough('App\State','App\Country','ContinentId','CountryId');
     }
      public function City() {
         return $this->hasMany('App\City');
     }
+     public function morphisam(){
+        return $this->morphMany('App\polymorphisam','Likable');
+ 
+    }
+    
    
 }

@@ -13,11 +13,20 @@ class Country extends Model
      public function Continent() {
         return $this->belongsTo('App\Continent','ContinentId');
     }
+    public function OneContinent() {
+        return $this->hasOne('App\Continent','Id','ContinentId');
+        
+    }
      public function State() {
-        return $this->hasMany('App\State');
+        return $this->hasMany('App\State','CountryId');
     }
      public function City() {
-        return $this->hasMany('App\City');
+        return $this->hasManyThrough('App\City','App\State','CountryId','StateId');
     }
+     public function morphisam(){
+        return $this->morphMany('App\polymorphisam','Likable');
+ 
+    }
+    
     
 }

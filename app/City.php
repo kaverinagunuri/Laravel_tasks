@@ -11,11 +11,11 @@ class City extends Model
      protected $fillable = ['StateId','CityName','CreatedAt','IsActive'];
      public $timestamps=false;
      public function Country() {
-        return $this->belongsTo('App\Country','Id');
+        return $this->belongsTo('App\Country','CountryId');
     }
      
-     public function City() {
-        return $this->hasOne('App\City','StateId');
+     public function State() {
+        return $this->belongsTo('App\City','StateId');
     }
      public function Continent(){
         return $this->hasOne('App\Continent','Id');
